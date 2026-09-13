@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phantom Heartbeats — Admin</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         LOGIN
+    ====================================================== -->
+
+    <main id="login-screen" class="screen">
+
+        <div class="login-box">
+
+            <div class="eyebrow">
+                PHANTOM HEARTBEATS
+            </div>
+
+            <h1>ADMIN</h1>
+
+            <form id="login-form">
+
+                <label for="email">
+                    EMAIL
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">
+                    PASSWORD
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    class="primary-button login-button"
+                >
+                    SIGN IN
+                </button>
+
+                <p
+                    id="login-error"
+                    class="error"
+                ></p>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         ADMIN
+    ====================================================== -->
+
+    <main id="admin-screen" class="screen hidden">
+
+        <header class="admin-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    PHANTOM HEARTBEATS
+                </div>
+
+                <h1>
+                    DISCOGRAPHY ADMIN
+                </h1>
+
+            </div>
+
+            <button
+                id="logout-button"
+                class="secondary-button"
+                type="button"
+            >
+                LOG OUT
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             RELEASE CATALOG
+        ================================================== -->
+
+        <section class="dashboard">
+
+            <div class="dashboard-top">
+
+                <div>
+
+                    <div class="eyebrow">
+                        CATALOG
+                    </div>
+
+                    <h2>
+                        RELEASES
+                    </h2>
+
+                </div>
+
+                <button
+                    id="new-release-button"
+                    class="primary-button"
+                    type="button"
+                >
+                    + NEW RELEASE
+                </button>
+
+            </div>
+
+
+            <div
+                id="release-list"
+                class="release-list"
+            >
+                <div class="loading">
+                    LOADING...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RELEASE EDITOR
+        ================================================== -->
+
+        <section
+            id="editor"
+            class="editor hidden"
+        >
+
+            <div class="editor-header">
+
+                <div>
+
+                    <div
+                        id="editor-eyebrow"
+                        class="eyebrow"
+                    >
+                        NEW RELEASE
+                    </div>
+
+                    <h2 id="editor-title">
+                        CREATE RELEASE
+                    </h2>
+
+                </div>
+
+                <button
+                    id="close-editor"
+                    class="secondary-button"
+                    type="button"
+                >
+                    CLOSE
+                </button>
+
+            </div>
+
+
+            <form id="release-form">
+
+                <input
+                    type="hidden"
+                    id="release-id"
+                >
+
+
+                <!-- =================================================
+                     RELEASE INFO
+                ================================================== -->
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="release-type">
+                            TYPE
+                        </label>
+
+                        <select
+                            id="release-type"
+                            required
+                        >
+
+                            <option value="album">
+                                Album
+                            </option>
+
+                            <option value="ep">
+                                EP
+                            </option>
+
+                            <option value="single">
+                                Single
+                            </option>
+
+                            <option value="featured">
+                                Featured
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="release-date">
+                            RELEASE DATE
+                        </label>
+
+                        <input
+                            type="date"
+                            id="release-date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="release-title">
+                            TITLE
+                        </label>
+
+                        <input
+                            type="text"
+                            id="release-title"
+                            placeholder="utolsó szaVak"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="release-artists">
+                            ARTIST(S)
+                        </label>
+
+                        <input
+                            type="text"
+                            id="release-artists"
+                            placeholder="Phantom Heartbeats"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         COVER
+                    ================================================== -->
+
+                    <div class="form-group full">
+
+                        <label for="cover-file">
+                            COVER
+                        </label>
+
+                        <input
+                            type="file"
+                            id="cover-file"
+                            accept="image/jpeg,image/png,image/webp"
+                        >
+
+                        <div
+                            id="cover-current"
+                            class="field-note"
+                        >
+                            No cover uploaded.
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PUBLISHED
+                    ================================================== -->
+
+                    <div class="form-group full">
+
+                        <label class="checkbox-label">
+
+                            <input
+                                type="checkbox"
+                                id="release-published"
+                            >
+
+                            <span>
+                                PUBLISHED
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TRACKS
+                ================================================== -->
+
+                <div class="tracks-editor">
+
+                    <div class="tracks-header">
+
+                        <div>
+
+                            <div class="eyebrow">
+                                RELEASE CONTENT
+                            </div>
+
+                            <h3>
+                                TRACKS
+                            </h3>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="add-track-button"
+                            class="secondary-button"
+                        >
+                            + ADD TRACK
+                        </button>
+
+                    </div>
+
+
+                    <div id="track-editor-list">
+
+                        <div class="empty-tracks">
+                            NO TRACKS YET
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="editor-actions">
+
+                    <button
+                        type="button"
+                        id="delete-release-button"
+                        class="danger-button"
+                    >
+                        DELETE RELEASE
+                    </button>
+
+                    <div class="editor-actions-right">
+
+                        <button
+                            type="button"
+                            id="cancel-button"
+                            class="secondary-button"
+                        >
+                            CANCEL
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            SAVE RELEASE
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <p
+                    id="save-message"
+                    class="message"
+                ></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

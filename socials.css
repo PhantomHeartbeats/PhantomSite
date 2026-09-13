@@ -1,0 +1,226 @@
+@font-face {
+    font-family: "Metropolitan";
+    src: url("./fonts/Metropolitan.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap");
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    font-family: "Metropolitan", sans-serif;
+
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SOCIALS PAGE
+========================================================= */
+
+.socials-page {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #fff;
+
+    overflow: hidden;
+
+    background: linear-gradient(
+        120deg,
+        #d96b00,
+        #ff9d00,
+        #ffd34e,
+        #f28a00,
+        #d95f00
+    );
+
+    background-size: 600% 600%;
+
+    animation: socialsGradientMove 14s ease infinite;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.socials-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation: socialsPopIn 0.8s ease-out both;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.socials-logo {
+    color: inherit;
+
+    text-decoration: none;
+
+    font-size: clamp(1.8rem, 5vw, 4rem);
+
+    letter-spacing: 0.08em;
+
+    transition: opacity 0.2s ease;
+}
+
+.socials-logo:hover {
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.socials-label {
+    margin-top: 3rem;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   SOCIAL LINKS
+========================================================= */
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.3rem;
+
+    margin-top: 2rem;
+}
+
+.social-links a {
+    color: inherit;
+
+    text-decoration: none;
+
+    font-size: 1rem;
+    letter-spacing: 0.18em;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.social-links a:hover {
+    opacity: 0.5;
+    transform: translateX(6px);
+}
+
+
+/* =========================================================
+   BACK LINK
+========================================================= */
+
+.back-link {
+    margin-top: 4rem;
+
+    color: inherit;
+
+    text-decoration: none;
+
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+
+    opacity: 0.45;
+
+    transition: opacity 0.2s ease;
+}
+
+.back-link:hover {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes socialsPopIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   GRADIENT ANIMATION
+========================================================= */
+
+@keyframes socialsGradientMove {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 100% 50%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    75% {
+        background-position: 0% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}

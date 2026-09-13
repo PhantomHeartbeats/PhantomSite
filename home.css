@@ -1,0 +1,393 @@
+@font-face {
+    font-family: "Metropolitan";
+    src: url("./fonts/Metropolitan.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap");
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+.home-page {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    overflow: hidden;
+
+    background: linear-gradient(
+        120deg,
+        #d96b00,
+        #ff9d00,
+        #ffd34e,
+        #f28a00,
+        #d95f00
+    );
+
+    background-size: 400% 400%;
+
+    animation: gradientMove 14s ease infinite;
+}
+
+
+/* =========================================================
+   HOME CONTENT
+========================================================= */
+
+.home-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation: homePopIn 0.8s ease-out both;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.home-title {
+    margin: 0;
+
+    font-family: "Metropolitan", sans-serif;
+
+    font-size: clamp(2.5rem, 7vw, 7rem);
+    font-weight: normal;
+
+    letter-spacing: 0.08em;
+
+    line-height: 1;
+
+    animation: titlePopIn 0.9s ease-out both;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.home-navigation {
+    display: flex;
+    gap: 4.5rem;
+
+    margin-top: 4.5rem;
+
+    animation:
+        navigationPopIn
+        0.8s
+        ease-out
+        0.15s
+        both;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
+
+.home-nav-link {
+    position: relative;
+
+    color: inherit;
+
+    text-decoration: none;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.25rem;
+
+    font-weight: 500;
+
+    letter-spacing: 0.18em;
+
+    padding: 0.5rem 0.25rem;
+
+    opacity: 0.8;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        letter-spacing 0.35s ease,
+        text-shadow 0.35s ease;
+}
+
+
+/* =========================================================
+   FANCY UNDERLINE
+========================================================= */
+
+.home-nav-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 0;
+    height: 1px;
+
+    background: currentColor;
+
+    transform: translateX(-50%);
+
+    opacity: 0.8;
+
+    transition:
+        width 0.35s ease,
+        opacity 0.35s ease;
+}
+
+
+.home-nav-link:hover {
+    opacity: 1;
+
+    transform: translateY(-3px);
+
+    letter-spacing: 0.24em;
+
+    text-shadow:
+        0 0 8px rgba(255, 255, 255, 0.28),
+        0 0 24px rgba(255, 255, 255, 0.16);
+}
+
+
+.home-nav-link:hover::after {
+    width: 100%;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SPECIAL INDIVIDUAL LINKS
+========================================================= */
+
+.home-nav-link[href="DISCOGRAPHY.html"] {
+    animation:
+        discographyFloat
+        4s
+        ease-in-out
+        infinite;
+}
+
+
+.home-nav-link[href="SOCIALS.html"] {
+    animation:
+        socialsFloat
+        4s
+        ease-in-out
+        0.7s
+        infinite;
+}
+
+
+/* =========================================================
+   HOVER OVERRIDE
+========================================================= */
+
+.home-nav-link[href="DISCOGRAPHY.html"]:hover,
+.home-nav-link[href="SOCIALS.html"]:hover {
+    animation-play-state: paused;
+}
+
+
+/* =========================================================
+   NAV FLOAT ANIMATIONS
+========================================================= */
+
+@keyframes discographyFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+
+}
+
+
+@keyframes socialsFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+
+}
+
+
+/* =========================================================
+   POP-IN ANIMATIONS
+========================================================= */
+
+@keyframes homePopIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+
+}
+
+
+@keyframes titlePopIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+@keyframes navigationPopIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   GRADIENT ANIMATION
+========================================================= */
+
+@keyframes gradientMove {
+
+    0% {
+        background-position:
+            0% 50%;
+    }
+
+    25% {
+        background-position:
+            100% 50%;
+    }
+
+    50% {
+        background-position:
+            100% 100%;
+    }
+
+    75% {
+        background-position:
+            0% 100%;
+    }
+
+    100% {
+        background-position:
+            0% 50%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .home-title {
+        font-size: 2.3rem;
+
+        letter-spacing:
+            0.06em;
+    }
+
+
+    .home-navigation {
+        gap: 2.2rem;
+
+        margin-top: 3.5rem;
+    }
+
+
+    .home-nav-link {
+        font-size: 1.05rem;
+
+        letter-spacing:
+            0.15em;
+    }
+
+
+    .home-nav-link:hover {
+        letter-spacing:
+            0.19em;
+    }
+
+}

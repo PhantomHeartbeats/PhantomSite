@@ -1,0 +1,647 @@
+/* =========================================================
+   PHANTOM HEARTBEATS — ADMIN
+   Clean system UI
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: #111;
+    background: #f5f5f5;
+    min-height: 100vh;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+.screen {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#login-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background: #f5f5f5;
+}
+
+.login-box {
+    width: min(420px, 100%);
+    padding: 40px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.06);
+}
+
+.login-box h1 {
+    margin: 8px 0 35px;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.login-box label,
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #666;
+}
+
+.login-box input,
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
+    margin-bottom: 20px;
+
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #fff;
+    color: #111;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.login-box input:focus,
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #111;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.login-button {
+    width: 100%;
+}
+
+.error {
+    min-height: 20px;
+    margin: 15px 0 0;
+
+    color: #b00020;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button,
+.secondary-button {
+    min-height: 42px;
+    padding: 0 18px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.primary-button {
+    border: 1px solid #111;
+    background: #111;
+    color: #fff;
+}
+
+.primary-button:hover {
+    background: #292929;
+}
+
+.primary-button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.secondary-button {
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    color: #111;
+}
+
+.secondary-button:hover {
+    background: #f5f5f5;
+    border-color: #c8c8c8;
+}
+
+.primary-button:active,
+.secondary-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 28px 5vw;
+
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.admin-header h1 {
+    margin: 6px 0 0;
+
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+    width: min(1200px, 90%);
+    margin: 55px auto;
+}
+
+.dashboard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    margin-bottom: 25px;
+}
+
+.dashboard-top h2,
+.editor h2 {
+    margin: 6px 0 0;
+
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   RELEASE LIST
+========================================================= */
+
+.release-list {
+    display: grid;
+    gap: 10px;
+}
+
+.release-item {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns:
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 18px;
+    padding: 16px;
+
+    text-align: left;
+
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.release-item:hover {
+    border-color: #cfcfcf;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.release-item-main {
+    min-width: 0;
+}
+
+.release-item-title {
+    margin-bottom: 6px;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.release-item-meta {
+    font-size: 12px;
+    color: #777;
+}
+
+.release-item-status {
+    display: inline-block;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.release-item-status.published {
+    background: #e8f7ed;
+    color: #18733c;
+}
+
+.release-item-status.draft {
+    background: #eeeeee;
+    color: #777;
+}
+
+
+/* =========================================================
+   EDITOR
+========================================================= */
+
+.editor {
+    width: min(1000px, 90%);
+
+    margin: 55px auto 120px;
+    padding: 32px;
+
+    background: #fff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+
+    margin-bottom: 40px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.field-note {
+    margin-top: -10px;
+    margin-bottom: 20px;
+
+    font-size: 11px;
+    color: #888;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+    color: #333 !important;
+}
+
+.checkbox-label input {
+    width: 17px;
+    height: 17px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   TRACKS
+========================================================= */
+
+.tracks-editor {
+    margin-top: 50px;
+    padding-top: 30px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+.tracks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    margin-bottom: 18px;
+}
+
+.tracks-header h3 {
+    margin: 6px 0 0;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.empty-tracks {
+    padding: 30px;
+
+    text-align: center;
+
+    border: 1px dashed #d0d0d0;
+    border-radius: 9px;
+
+    color: #999;
+    font-size: 12px;
+}
+
+
+/* Track rows generated by admin.js */
+
+.track-row {
+    display: grid;
+
+    grid-template-columns:
+        42px
+        1fr
+        auto;
+
+    gap: 12px;
+
+    align-items: start;
+
+    padding: 14px;
+    margin-bottom: 10px;
+
+    background: #fafafa;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+}
+
+.track-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 40px;
+
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.track-fields {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+.track-fields .form-group {
+    min-width: 0;
+}
+
+.track-fields .form-group.full {
+    grid-column: 1 / -1;
+}
+
+.track-fields input {
+    margin-bottom: 0;
+}
+
+.track-current {
+    margin-top: -5px;
+
+    font-size: 11px;
+    color: #888;
+}
+
+.remove-track {
+    min-height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ead4d4;
+    border-radius: 6px;
+
+    background: #fff5f5;
+    color: #a00000;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.remove-track:hover {
+    background: #ffe9e9;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.editor-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 40px;
+    padding-top: 25px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+.message {
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    text-align: right;
+
+    font-size: 12px;
+    color: #666;
+}
+
+.loading {
+    padding: 40px;
+
+    text-align: center;
+
+    color: #888;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .admin-header {
+        padding: 22px;
+    }
+
+    .dashboard,
+    .editor {
+        width: calc(100% - 30px);
+    }
+
+    .dashboard-top {
+        align-items: start;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .release-item {
+        grid-template-columns: 1fr;
+    }
+
+    .release-item-status {
+        justify-self: start;
+    }
+
+    .track-row {
+        grid-template-columns:
+            35px
+            1fr;
+    }
+
+    .track-fields {
+        grid-column: 1 / -1;
+
+        grid-template-columns: 1fr;
+    }
+
+    .track-fields .form-group.full {
+        grid-column: auto;
+    }
+
+    .remove-track {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .editor {
+        padding: 22px;
+    }
+
+    .editor-header {
+        gap: 15px;
+    }
+
+    .login-box {
+        padding: 30px;
+    }
+}
+
+.editor-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.editor-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@media (max-width: 700px) {
+    .editor-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .editor-actions-right {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
