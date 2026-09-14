@@ -1922,3 +1922,393 @@ main {
         animation: none;
     }
 }
+
+/* =========================================================
+   PHANTOM HEARTBEATS — DISCOGRAPHY MOBILE UPGRADE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    /* -----------------------------------------------------
+       GLOBAL
+    ----------------------------------------------------- */
+
+    body {
+        padding-bottom: 125px;
+    }
+
+    main {
+        width: calc(100% - 30px);
+    }
+
+    /* -----------------------------------------------------
+       HEADER
+    ----------------------------------------------------- */
+
+    .header-inner {
+        width: calc(100% - 30px);
+        height: 62px;
+    }
+
+    .logo {
+        font-size: 12px;
+    }
+
+    .main-nav {
+        gap: 16px;
+    }
+
+    .nav-button {
+        font-size: 9px;
+        letter-spacing: 0.06em;
+    }
+
+    /* -----------------------------------------------------
+       HERO
+    ----------------------------------------------------- */
+
+    .hero {
+        padding: 70px 0 65px;
+    }
+
+    .hero h1 {
+        font-size: clamp(58px, 18vw, 105px);
+        line-height: 0.84;
+        letter-spacing: -0.075em;
+        max-width: 100%;
+    }
+
+    .hero .eyebrow {
+        margin-top: 45px;
+        font-size: 9px;
+    }
+
+    /* -----------------------------------------------------
+       LATEST RELEASE
+    ----------------------------------------------------- */
+
+    .latest-release {
+        padding-bottom: 75px;
+    }
+
+    .latest-release .section-header {
+        margin-bottom: 22px;
+    }
+
+    .section-header {
+        padding-bottom: 13px;
+    }
+
+    .eyebrow {
+        font-size: 9px;
+    }
+
+    .featured-release {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 28px;
+    }
+
+    .release-artwork {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .release-info {
+        padding-bottom: 0;
+    }
+
+    .release-info h2 {
+        margin-top: 10px;
+
+        font-size: clamp(
+            38px,
+            11vw,
+            58px
+        );
+
+        line-height: 0.92;
+    }
+
+    .release-description {
+        margin-top: 14px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .release-meta {
+        margin-top: 7px;
+        font-size: 10px;
+    }
+
+    .play-album-button {
+        margin-top: 23px;
+        padding: 13px 19px;
+        font-size: 10px;
+    }
+
+    /* -----------------------------------------------------
+       CATALOG
+    ----------------------------------------------------- */
+
+    .catalog-section {
+        padding-bottom: 75px;
+    }
+
+    .catalog-section .section-header {
+        margin-bottom: 20px;
+    }
+
+    /* 2-column mobile grid */
+    .release-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px 13px;
+    }
+
+    .release-card-info {
+        padding-top: 10px;
+    }
+
+    .release-card-info h3 {
+        font-size: 14px;
+        line-height: 1.15;
+    }
+
+    .release-card-info p {
+        margin-top: 4px;
+        font-size: 10px;
+        line-height: 1.3;
+    }
+
+    .empty-category {
+        min-height: 75px;
+        font-size: 9px;
+    }
+
+    /* -----------------------------------------------------
+       TRACKLIST
+    ----------------------------------------------------- */
+
+    .track-section {
+        padding-bottom: 100px;
+    }
+
+    .track {
+        grid-template-columns:
+            34px
+            minmax(0, 1fr)
+            auto;
+
+        min-height: 61px;
+
+        padding: 0;
+
+        gap: 8px;
+    }
+
+    .track-number {
+        font-size: 10px;
+    }
+
+    .track-name {
+        min-width: 0;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .track-duration {
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    .track.active {
+        border-radius: 6px;
+    }
+
+    .track.active .track-number::before {
+        margin-right: 0.25rem;
+        font-size: 0.45rem;
+    }
+
+    /* -----------------------------------------------------
+       SOCIALS
+    ----------------------------------------------------- */
+
+    .socials-section {
+        padding: 75px 0 120px;
+    }
+
+    .socials-section h2 {
+        margin-top: 14px;
+
+        font-size: clamp(
+            45px,
+            13vw,
+            75px
+        );
+
+        line-height: 0.88;
+    }
+
+    .social-links {
+        gap: 8px;
+        margin-top: 32px;
+    }
+
+    .social-links a {
+        padding: 11px 15px;
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 500px) {
+
+    main {
+        width: calc(100% - 24px);
+    }
+
+    .header-inner {
+        width: calc(100% - 24px);
+    }
+
+    .main-nav {
+        gap: 12px;
+    }
+
+    .nav-button {
+        font-size: 8px;
+    }
+
+    /* -----------------------------------------------------
+       HERO
+    ----------------------------------------------------- */
+
+    .hero {
+        padding: 55px 0 55px;
+    }
+
+    .hero h1 {
+        font-size: 20vw;
+    }
+
+    .hero .eyebrow {
+        margin-top: 34px;
+    }
+
+    /* -----------------------------------------------------
+       LATEST RELEASE
+    ----------------------------------------------------- */
+
+    .featured-release {
+        gap: 22px;
+    }
+
+    .release-info h2 {
+        font-size: 11vw;
+    }
+
+    .release-description {
+        font-size: 12px;
+    }
+
+    /* -----------------------------------------------------
+       RELEASE GRID
+    ----------------------------------------------------- */
+
+    .release-grid {
+        gap: 22px 10px;
+    }
+
+    .release-card-info {
+        padding-top: 8px;
+    }
+
+    .release-card-info h3 {
+        font-size: 12px;
+    }
+
+    .release-card-info p {
+        font-size: 9px;
+    }
+
+    /* -----------------------------------------------------
+       TRACKLIST
+    ----------------------------------------------------- */
+
+    .track {
+        grid-template-columns:
+            27px
+            minmax(0, 1fr)
+            auto;
+
+        min-height: 56px;
+
+        gap: 6px;
+    }
+
+    .track-name {
+        font-size: 13px;
+    }
+
+    .track-number,
+    .track-duration {
+        font-size: 9px;
+    }
+
+    /* -----------------------------------------------------
+       PLAYER
+    ----------------------------------------------------- */
+
+    .music-player {
+        width: calc(100% - 12px);
+        bottom: 6px;
+
+        border-radius: 13px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 370px) {
+
+    .main-nav {
+        gap: 9px;
+    }
+
+    .nav-button {
+        font-size: 7px;
+    }
+
+    .release-grid {
+        gap: 18px 8px;
+    }
+
+    .track {
+        grid-template-columns:
+            23px
+            minmax(0, 1fr)
+            auto;
+    }
+
+    .track-name {
+        font-size: 12px;
+    }
+
+    .track-duration {
+        font-size: 8px;
+    }
+}
