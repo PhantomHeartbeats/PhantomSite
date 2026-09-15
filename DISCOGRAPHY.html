@@ -1451,11 +1451,18 @@
 
 
                             <div class="track-name">
-                                ${escapeHtml(
-                                    sourceTrack.title
-                                )}
-                            </div>
+    ${escapeHtml(
+        sourceTrack.title
+    )}
 
+    <div class="track-artist">
+        ${escapeHtml(
+            sourceTrack.artists ||
+            release.artists ||
+            "Phantom Heartbeats"
+        )}
+    </div>
+</div>
 
                             <div
                                 class="track-duration"
