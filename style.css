@@ -1059,6 +1059,13 @@ main {
     letter-spacing: -0.02em;
 }
 
+.track-artist {
+    margin-top: 4px;
+    color: #888888;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
 
 .track-duration {
 
@@ -1830,6 +1837,8 @@ main {
         padding:
             0.75rem
             0.9rem;
+            
+            
     }
 
 
