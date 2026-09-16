@@ -2321,3 +2321,14 @@ main {
         font-size: 8px;
     }
 }
+.disc-header {
+    margin-top: 40px;
+    margin-bottom: 16px;
+}
+
+.disc-header h3 {
+    font-size: 13px;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
