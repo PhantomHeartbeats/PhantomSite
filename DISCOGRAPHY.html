@@ -1,429 +1,400 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        Phantom Heartbeats — Discography
-    </title>
+<title>
+    Phantom Heartbeats — Discography
+</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+```
 
 </head>
 
-
 <body>
 
+```
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+<header class="site-header">
 
-    <header class="site-header">
+    <div class="header-inner">
 
-        <div class="header-inner">
+        <a
+            href="index.html"
+            class="logo"
+        >
+            PHANTOM HEARTBEATS
+        </a>
+
+
+        <nav class="main-nav">
 
             <a
                 href="index.html"
-                class="logo"
+                class="nav-button"
             >
-                PHANTOM HEARTBEATS
+                HOME
             </a>
 
 
-            <nav class="main-nav">
-
-                <a
-                    href="index.html"
-                    class="nav-button"
-                >
-                    HOME
-                </a>
+            <a
+                href="DISCOGRAPHY.html"
+                class="nav-button active"
+            >
+                MUSIC
+            </a>
 
 
-                <a
-                    href="DISCOGRAPHY.html"
-                    class="nav-button active"
-                >
-                    MUSIC
-                </a>
+            <a
+                href="SOCIALS.html"
+                class="nav-button"
+            >
+                SOCIALS
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
 
 
-                <a
-                    href="SOCIALS.html"
-                    class="nav-button"
-                >
-                    SOCIALS
-                </a>
 
-            </nav>
+<!-- =====================================================
+     MUSIC PAGE
+====================================================== -->
 
+<main class="page active">
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="hero">
+
+        <h1>
+            PHANTOM HEARTBEATS
+        </h1>
+
+
+        <div class="eyebrow">
+            DISCOGRAPHY
         </div>
 
-    </header>
+    </section>
 
 
 
-    <!-- =====================================================
-         MUSIC PAGE
-    ====================================================== -->
+    <!-- =================================================
+         LATEST RELEASE
+    ================================================== -->
 
-    <main class="page active">
-
-
-        <!-- =================================================
-             HERO
-        ================================================== -->
-
-        <section class="hero">
-
-            <h1>
-                PHANTOM HEARTBEATS
-            </h1>
-
-
-            <div class="eyebrow">
-                DISCOGRAPHY
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             LATEST RELEASE
-        ================================================== -->
-
-        <section
-            class="latest-release"
-            id="latest-release-section"
-        >
-
-            <div class="section-header">
-
-                <div class="eyebrow">
-                    LATEST RELEASE
-                </div>
-
-            </div>
-
-
-            <div
-                class="featured-release"
-                id="featured-release"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             ALBUMS
-        ================================================== -->
-
-        <section
-            class="catalog-section"
-            id="albums-section"
-        >
-
-            <div class="section-header">
-
-                <div class="eyebrow">
-                    ALBUMS
-                </div>
-
-            </div>
-
-
-            <div
-                class="release-grid"
-                id="albums-grid"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             EPS
-        ================================================== -->
-
-        <section
-            class="catalog-section"
-            id="eps-section"
-        >
-
-            <div class="section-header">
-
-                <div class="eyebrow">
-                    EPs
-                </div>
-
-            </div>
-
-
-            <div
-                class="release-grid"
-                id="eps-grid"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SINGLES
-        ================================================== -->
-
-        <section
-            class="catalog-section"
-            id="singles-section"
-        >
-
-            <div class="section-header">
-
-                <div class="eyebrow">
-                    SINGLES
-                </div>
-
-            </div>
-
-
-            <div
-                class="release-grid"
-                id="singles-grid"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             FEATURED
-        ================================================== -->
-
-        <section
-            class="catalog-section"
-            id="featured-section"
-        >
-
-            <div class="section-header">
-
-                <div class="eyebrow">
-                    FEATURED
-                </div>
-
-            </div>
-
-
-            <div
-                class="release-grid"
-                id="featured-grid"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             TRACKLIST
-        ================================================== -->
-
-        <section
-            id="tracklist-section"
-            class="track-section hidden"
-        >
-
-            <div class="section-header">
-
-                <div
-                    class="eyebrow"
-                    id="tracklist-heading"
-                >
-                    TRACKLIST
-                </div>
-
-            </div>
-
-
-            <div
-                id="tracks"
-                class="tracklist"
-            ></div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
-         MUSIC PLAYER
-    ====================================================== -->
-
-    <div
-        class="music-player"
-        id="music-player"
+    <section
+        class="latest-release"
+        id="latest-release-section"
     >
 
+        <div class="section-header">
 
-        <div class="player-track-info">
-
-            <img
-                id="player-artwork"
-                src=""
-                alt=""
-            >
-
-
-            <div class="player-track-text">
-
-                <div
-                    id="player-title"
-                    class="player-title"
-                >
-                    Select a track
-                </div>
-
-
-                <div
-                    id="player-artist"
-                    class="player-artist"
-                >
-                    Phantom Heartbeats
-                </div>
-
+            <div class="eyebrow">
+                LATEST RELEASE
             </div>
 
         </div>
 
 
+        <div
+            class="featured-release"
+            id="featured-release"
+        ></div>
 
-        <div class="player-center">
-
-            <div class="player-controls">
-
-                <!-- SHUFFLE -->
-
-                <button
-                    id="shuffle-button"
-                    class="player-control"
-                    aria-label="Shuffle off"
-                    title="Shuffle off"
-                >
-                    <span class="control-icon">
-                        🔀
-                    </span>
-                </button>
-
-
-                <!-- PREVIOUS -->
-
-                <button
-                    id="previous-button"
-                    class="player-control"
-                    aria-label="Previous track"
-                    title="Previous"
-                >
-                    <span class="control-icon">
-                        ⏮
-                    </span>
-                </button>
-
-
-                <!-- PLAY / PAUSE -->
-
-                <button
-                    id="play-button"
-                    class="player-control player-play"
-                    onclick="togglePlay()"
-                    aria-label="Play"
-                    title="Play"
-                >
-                    <span class="control-icon">
-                        ▶
-                    </span>
-                </button>
-
-
-                <!-- NEXT -->
-
-                <button
-                    id="next-button"
-                    class="player-control"
-                    aria-label="Next track"
-                    title="Next"
-                >
-                    <span class="control-icon">
-                        ⏭
-                    </span>
-                </button>
-
-            </div>
+    </section>
 
 
 
-            <div class="player-progress">
+    <!-- =================================================
+         ALBUMS
+    ================================================== -->
 
-                <span id="current-time">
-                    0:00
-                </span>
+    <section
+        class="catalog-section"
+        id="albums-section"
+    >
 
+        <div class="section-header">
 
-                <input
-                    type="range"
-                    id="progress"
-                    min="0"
-                    max="100"
-                    value="0"
-                    step="0.1"
-                    aria-label="Track progress"
-                >
-
-
-                <span id="duration">
-                    0:00
-                </span>
-
+            <div class="eyebrow">
+                ALBUMS
             </div>
 
         </div>
 
 
+        <div
+            class="release-grid"
+            id="albums-grid"
+        ></div>
 
-        <div class="player-volume">
+    </section>
 
-            <span
-                id="volume-icon"
-                class="volume-icon"
+
+
+    <!-- =================================================
+         EPS
+    ================================================== -->
+
+    <section
+        class="catalog-section"
+        id="eps-section"
+    >
+
+        <div class="section-header">
+
+            <div class="eyebrow">
+                EPs
+            </div>
+
+        </div>
+
+
+        <div
+            class="release-grid"
+            id="eps-grid"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SINGLES
+    ================================================== -->
+
+    <section
+        class="catalog-section"
+        id="singles-section"
+    >
+
+        <div class="section-header">
+
+            <div class="eyebrow">
+                SINGLES
+            </div>
+
+        </div>
+
+
+        <div
+            class="release-grid"
+            id="singles-grid"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         FEATURED
+    ================================================== -->
+
+    <section
+        class="catalog-section"
+        id="featured-section"
+    >
+
+        <div class="section-header">
+
+            <div class="eyebrow">
+                FEATURED
+            </div>
+
+        </div>
+
+
+        <div
+            class="release-grid"
+            id="featured-grid"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         TRACKLIST
+    ================================================== -->
+
+    <section
+        id="tracklist-section"
+        class="track-section hidden"
+    >
+
+        <div class="section-header">
+
+            <div
+                class="eyebrow"
+                id="tracklist-heading"
             >
-                🔊
+                TRACKLIST
+            </div>
+
+        </div>
+
+
+        <div
+            id="tracks"
+            class="tracklist"
+        ></div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     MUSIC PLAYER
+====================================================== -->
+
+<div
+    class="music-player"
+    id="music-player"
+>
+
+
+    <div class="player-track-info">
+
+        <img
+            id="player-artwork"
+            src=""
+            alt=""
+        >
+
+
+        <div class="player-track-text">
+
+            <div
+                id="player-title"
+                class="player-title"
+            >
+                Select a track
+            </div>
+
+
+            <div
+                id="player-artist"
+                class="player-artist"
+            >
+                Phantom Heartbeats
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="player-center">
+
+        <div class="player-controls">
+
+            <!-- SHUFFLE -->
+
+            <button
+                id="shuffle-button"
+                class="player-control"
+                aria-label="Shuffle off"
+                title="Shuffle off"
+            >
+                <span class="control-icon">
+                    🔀
+                </span>
+            </button>
+
+
+            <!-- PREVIOUS -->
+
+            <button
+                id="previous-button"
+                class="player-control"
+                aria-label="Previous track"
+                title="Previous"
+            >
+                <span class="control-icon">
+                    ⏮
+                </span>
+            </button>
+
+
+            <!-- PLAY / PAUSE -->
+
+            <button
+                id="play-button"
+                class="player-control player-play"
+                onclick="togglePlay()"
+                aria-label="Play"
+                title="Play"
+            >
+                <span class="control-icon">
+                    ▶
+                </span>
+            </button>
+
+
+            <!-- NEXT -->
+
+            <button
+                id="next-button"
+                class="player-control"
+                aria-label="Next track"
+                title="Next"
+            >
+                <span class="control-icon">
+                    ⏭
+                </span>
+            </button>
+
+        </div>
+
+
+
+        <div class="player-progress">
+
+            <span id="current-time">
+                0:00
             </span>
 
 
             <input
                 type="range"
-                id="volume"
+                id="progress"
                 min="0"
-                max="1"
-                step="0.01"
-                value="1"
-                aria-label="Volume"
+                max="100"
+                value="0"
+                step="0.1"
+                aria-label="Track progress"
             >
 
 
-            <span id="volume-value">
-                100%
+            <span id="duration">
+                0:00
             </span>
 
         </div>
@@ -432,316 +403,269 @@
 
 
 
-    <!-- =====================================================
-         AUDIO
-    ====================================================== -->
+    <div class="player-volume">
 
-    <audio
-        id="audio"
-        preload="metadata"
-    ></audio>
-
-
-
-    <!-- =====================================================
-         SCRIPTS
-    ====================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+        <span
+            id="volume-icon"
+            class="volume-icon"
+        >
+            🔊
+        </span>
 
 
-    <script src="player.js"></script>
+        <input
+            type="range"
+            id="volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+            aria-label="Volume"
+        >
 
 
+        <span id="volume-value">
+            100%
+        </span>
 
-    <!-- =====================================================
-         DISCOGRAPHY LOGIC
-    ====================================================== -->
+    </div>
 
-    <script>
-
-        const SUPABASE_URL =
-            "https://wayjatvqnbqyzmwnbabp.supabase.co";
-
-
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_UUx-z6V2gMIaEsedYj4ZBA_Q750jG2_";
-
-
-        const WORKER_URL =
-            "https://phantom-heartbeats-api.3huvelyk.workers.dev";
-
-
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+</div>
 
 
 
-        /* =====================================================
-           STATE
-        ====================================================== */
+<!-- =====================================================
+     AUDIO
+====================================================== -->
 
-        let releases = [];
-
-        let releaseTracks = {};
-
-
-
-        /* =====================================================
-           DOM
-        ====================================================== */
-
-        const featuredRelease =
-            document.getElementById(
-                "featured-release"
-            );
-
-
-        const albumsGrid =
-            document.getElementById(
-                "albums-grid"
-            );
-
-
-        const epsGrid =
-            document.getElementById(
-                "eps-grid"
-            );
-
-
-        const singlesGrid =
-            document.getElementById(
-                "singles-grid"
-            );
-
-
-        const featuredGrid =
-            document.getElementById(
-                "featured-grid"
-            );
-
-
-        const tracklistSection =
-            document.getElementById(
-                "tracklist-section"
-            );
-
-
-        const tracklistHeading =
-            document.getElementById(
-                "tracklist-heading"
-            );
-
-
-        const trackContainer =
-            document.getElementById(
-                "tracks"
-            );
+<audio
+    id="audio"
+    preload="metadata"
+></audio>
 
 
 
-        /* =====================================================
-           FILE URL
-        ====================================================== */
+<!-- =====================================================
+     SCRIPTS
+====================================================== -->
 
-        function r2Url(
-            value
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script src="player.js"></script>
+
+
+
+<!-- =====================================================
+     DISCOGRAPHY LOGIC
+====================================================== -->
+
+<script>
+
+    const SUPABASE_URL =
+        "https://wayjatvqnbqyzmwnbabp.supabase.co";
+
+
+    const SUPABASE_ANON_KEY =
+        "sb_publishable_UUx-z6V2gMIaEsedYj4ZBA_Q750jG2_";
+
+
+    const WORKER_URL =
+        "https://phantom-heartbeats-api.3huvelyk.workers.dev";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+
+    /* =====================================================
+       STATE
+    ====================================================== */
+
+    let releases = [];
+
+    let releaseTracks = {};
+
+
+
+    /* =====================================================
+       DOM
+    ====================================================== */
+
+    const featuredRelease =
+        document.getElementById(
+            "featured-release"
+        );
+
+
+    const albumsGrid =
+        document.getElementById(
+            "albums-grid"
+        );
+
+
+    const epsGrid =
+        document.getElementById(
+            "eps-grid"
+        );
+
+
+    const singlesGrid =
+        document.getElementById(
+            "singles-grid"
+        );
+
+
+    const featuredGrid =
+        document.getElementById(
+            "featured-grid"
+        );
+
+
+    const tracklistSection =
+        document.getElementById(
+            "tracklist-section"
+        );
+
+
+    const tracklistHeading =
+        document.getElementById(
+            "tracklist-heading"
+        );
+
+
+    const trackContainer =
+        document.getElementById(
+            "tracks"
+        );
+
+
+
+    /* =====================================================
+       FILE URL
+    ====================================================== */
+
+    function r2Url(
+        value
+    ) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        if (
+            value.startsWith(
+                "http://"
+            ) ||
+            value.startsWith(
+                "https://"
+            )
         ) {
 
-            if (!value) {
-                return "";
-            }
-
-
-            if (
-                value.startsWith(
-                    "http://"
-                ) ||
-                value.startsWith(
-                    "https://"
-                )
-            ) {
-
-                return value;
-
-            }
-
-
-            return (
-                WORKER_URL +
-                "/file?key=" +
-                encodeURIComponent(
-                    value
-                )
-            );
+            return value;
 
         }
 
 
+        return (
+            WORKER_URL +
+            "/file?key=" +
+            encodeURIComponent(
+                value
+            )
+        );
 
-        /* =====================================================
-           FORMAT YEAR
-        ====================================================== */
+    }
 
-        function formatReleaseYear(
-            releaseDate
+
+
+    /* =====================================================
+       FORMAT YEAR
+    ====================================================== */
+
+    function formatReleaseYear(
+        releaseDate
+    ) {
+
+        if (!releaseDate) {
+            return "";
+        }
+
+
+        return new Date(
+            releaseDate +
+            "T00:00:00"
+        ).getFullYear();
+
+    }
+
+
+
+    /* =====================================================
+       FORMAT RUNTIME
+    ====================================================== */
+
+    function formatRuntime(
+        seconds
+    ) {
+
+        if (
+            !seconds ||
+            !Number.isFinite(
+                Number(seconds)
+            )
         ) {
 
-            if (!releaseDate) {
-                return "";
-            }
-
-
-            return new Date(
-                releaseDate +
-                "T00:00:00"
-            ).getFullYear();
+            return "--:--";
 
         }
 
 
-
-        /* =====================================================
-           FORMAT RUNTIME
-        ====================================================== */
-
-        function formatRuntime(
-            seconds
-        ) {
-
-            if (
-                !seconds ||
-                !Number.isFinite(
-                    Number(seconds)
-                )
-            ) {
-
-                return "--:--";
-
-            }
-
-
-            const total =
-                Math.floor(
-                    Number(seconds)
-                );
-
-
-            const minutes =
-                Math.floor(
-                    total / 60
-                );
-
-
-            const remaining =
-                total % 60;
-
-
-            return (
-                minutes +
-                ":" +
-                String(
-                    remaining
-                ).padStart(
-                    2,
-                    "0"
-                )
+        const total =
+            Math.floor(
+                Number(seconds)
             );
 
-        }
+
+        const minutes =
+            Math.floor(
+                total / 60
+            );
+
+
+        const remaining =
+            total % 60;
+
+
+        return (
+            minutes +
+            ":" +
+            String(
+                remaining
+            ).padStart(
+                2,
+                "0"
+            )
+        );
+
+    }
 
 
 
-        /* =====================================================
-           LOAD RELEASES
-        ====================================================== */
+    /* =====================================================
+       LOAD RELEASES
+    ====================================================== */
 
-        async function loadReleases() {
+    async function loadReleases() {
 
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from(
-                            "releases"
-                        )
-                        .select(
-                            "*"
-                        )
-                        .eq(
-                            "published",
-                            true
-                        )
-                        .order(
-                            "release_date",
-                            {
-                                ascending:
-                                    false,
-                                nullsFirst:
-                                    false
-                            }
-                        );
-
-
-                if (error) {
-                    throw error;
-                }
-
-
-                releases =
-                    data || [];
-
-
-                await loadAllTracks();
-
-
-                renderReleases();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Could not load discography:",
-                    error
-                );
-
-
-                showLoadError();
-
-            }
-
-        }
-
-
-
-        /* =====================================================
-           LOAD TRACKS
-        ====================================================== */
-
-        async function loadAllTracks() {
-
-            releaseTracks = {};
-
-
-            if (!releases.length) {
-                return;
-            }
-
-
-            const releaseIds =
-                releases.map(
-                    release =>
-                        release.id
-                );
-
+        try {
 
             const {
                 data,
@@ -749,20 +673,22 @@
             } =
                 await supabaseClient
                     .from(
-                        "tracks"
+                        "releases"
                     )
                     .select(
                         "*"
                     )
-                    .in(
-                        "release_id",
-                        releaseIds
+                    .eq(
+                        "published",
+                        true
                     )
                     .order(
-                        "track_number",
+                        "release_date",
                         {
                             ascending:
-                                true
+                                false,
+                            nullsFirst:
+                                false
                         }
                     );
 
@@ -772,193 +698,468 @@
             }
 
 
-            for (
-                const release
-                of releases
-            ) {
+            releases =
+                data || [];
 
-                releaseTracks[
-                    release.id
-                ] =
-                    (
-                        data || []
-                    )
-                    .filter(
-                        track =>
-                            track.release_id ===
-                            release.id
-                    )
-                    .sort(
-                        (
-                            a,
-                            b
-                        ) =>
-                            a.track_number -
-                            b.track_number
-                    );
 
-            }
+            await loadAllTracks();
+
+
+            renderReleases();
+
+
+        } catch (error) {
+
+            console.error(
+                "Could not load discography:",
+                error
+            );
+
+
+            showLoadError();
 
         }
 
+    }
 
 
-        /* =====================================================
-           PLAYER TRACK DATA
-        ====================================================== */
 
-        function getPlayerTracks(
-            release
+    /* =====================================================
+       LOAD TRACKS
+    ====================================================== */
+
+    async function loadAllTracks() {
+
+        releaseTracks = {};
+
+
+        if (!releases.length) {
+            return;
+        }
+
+
+        const releaseIds =
+            releases.map(
+                release =>
+                    release.id
+            );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "tracks"
+                )
+                .select(
+                    "*"
+                )
+                .in(
+                    "release_id",
+                    releaseIds
+                )
+                .order(
+                    "disc_number",
+                    {
+                        ascending: true
+                    }
+                )
+                .order(
+                    "track_number",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        for (
+            const release
+            of releases
         ) {
 
-            const sourceTracks =
-                releaseTracks[
-                    release.id
-                ] || [];
-
-
-            return sourceTracks
+            releaseTracks[
+                release.id
+            ] =
+                (
+                    data || []
+                )
                 .filter(
                     track =>
-                        !!track.audio_url
+                        track.release_id ===
+                        release.id
                 )
-                .map(
-                    track => {
-
-                        return {
-
-                            id:
-                                track.id,
-
-
-                            releaseId:
-                                release.id,
-
-
-                            releaseTitle:
-                                release.title,
-
-
-                            title:
-                                track.title,
-
-
-                            artists:
-                                track.artists ||
-                                release.artists ||
-                                "Phantom Heartbeats",
-
-
-                            file:
-                                r2Url(
-                                    track.audio_url
-                                ),
-
-
-                            artwork:
-                                r2Url(
-                                    release.cover_url
-                                ),
-
-
-                            duration:
-                                Number(
-                                    track.duration_seconds
-                                ) || 0
-
-                        };
-
-                    }
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        (
+                            (a.disc_number || 1) -
+                            (b.disc_number || 1)
+                        ) ||
+                        (
+                            a.track_number -
+                            b.track_number
+                        )
                 );
 
         }
 
+    }
 
 
-        /* =====================================================
-           RELEASE CARD
-        ====================================================== */
 
-        function createReleaseCard(
-            release
-        ) {
+    /* =====================================================
+       PLAYER TRACK DATA
+    ====================================================== */
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+    function getPlayerTracks(
+        release
+    ) {
 
-
-            card.className =
-                "release-card";
+        const sourceTracks =
+            releaseTracks[
+                release.id
+            ] || [];
 
 
-            const artworkUrl =
-                r2Url(
-                    release.cover_url
-                );
+        return sourceTracks
+            .filter(
+                track =>
+                    !!track.audio_url
+            )
+            .map(
+                track => {
+
+                    return {
+
+                        id:
+                            track.id,
 
 
-            const year =
-                formatReleaseYear(
-                    release.release_date
-                );
+                        releaseId:
+                            release.id,
 
 
-            const displayType =
-                release.type === "featured"
-                    ? "FEATURED"
-                    : release.type.toUpperCase();
+                        releaseTitle:
+                            release.title,
 
 
-            card.innerHTML = `
+                        title:
+                            track.title,
 
-                <div class="release-card-artwork">
+
+                        artists:
+                            track.artists ||
+                            release.artists ||
+                            "Phantom Heartbeats",
+
+
+                        file:
+                            r2Url(
+                                track.audio_url
+                            ),
+
+
+                        artwork:
+                            r2Url(
+                                release.cover_url
+                            ),
+
+
+                        duration:
+                            Number(
+                                track.duration_seconds
+                            ) || 0
+
+                    };
+
+                }
+            );
+
+    }
+
+
+
+    /* =====================================================
+       RELEASE CARD
+    ====================================================== */
+
+    function createReleaseCard(
+        release
+    ) {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "release-card";
+
+
+        const artworkUrl =
+            r2Url(
+                release.cover_url
+            );
+
+
+        const year =
+            formatReleaseYear(
+                release.release_date
+            );
+
+
+        const displayType =
+            release.type === "featured"
+                ? "FEATURED"
+                : release.type.toUpperCase();
+
+
+        card.innerHTML = `
+
+            <div class="release-card-artwork">
+
+                ${
+                    artworkUrl
+                        ? `
+                            <img
+                                src="${escapeHtml(
+                                    artworkUrl
+                                )}"
+                                alt="${escapeHtml(
+                                    release.title
+                                )} artwork"
+                                loading="lazy"
+                            >
+                        `
+                        : ""
+                }
+
+            </div>
+
+
+            <div class="release-card-info">
+
+                <h3>
+                    ${escapeHtml(
+                        release.title
+                    )}
+                </h3>
+
+
+                <p>
+                    ${displayType}
 
                     ${
-                        artworkUrl
-                            ? `
-                                <img
-                                    src="${escapeHtml(
-                                        artworkUrl
-                                    )}"
-                                    alt="${escapeHtml(
-                                        release.title
-                                    )} artwork"
-                                    loading="lazy"
-                                >
-                            `
+                        year
+                            ? ` · ${year}`
                             : ""
                     }
+                </p>
 
-                </div>
+            </div>
 
-
-                <div class="release-card-info">
-
-                    <h3>
-                        ${escapeHtml(
-                            release.title
-                        )}
-                    </h3>
+        `;
 
 
-                    <p>
-                        ${displayType}
+        card.addEventListener(
+            "click",
+            () => {
 
-                        ${
-                            year
-                                ? ` · ${year}`
-                                : ""
-                        }
-                    </p>
+                showReleaseTracks(
+                    release.id
+                );
 
-                </div>
+            }
+        );
 
+
+        return card;
+
+    }
+
+
+
+    /* =====================================================
+       LATEST RELEASE
+    ====================================================== */
+
+    function renderFeatured() {
+
+        if (
+            !featuredRelease
+        ) {
+            return;
+        }
+
+
+        if (!releases.length) {
+
+            featuredRelease.innerHTML = `
+                <p>
+                    No releases published yet.
+                </p>
             `;
 
 
-            card.addEventListener(
+            return;
+
+        }
+
+
+        const release =
+            releases[0];
+
+
+        const artworkUrl =
+            r2Url(
+                release.cover_url
+            );
+
+
+        const tracks =
+            releaseTracks[
+                release.id
+            ] || [];
+
+
+        const runtime =
+            tracks.reduce(
+                (
+                    total,
+                    track
+                ) =>
+                    total +
+                    (
+                        Number(
+                            track.duration_seconds
+                        ) || 0
+                    ),
+                0
+            );
+
+
+        const year =
+            formatReleaseYear(
+                release.release_date
+            );
+
+
+        const displayType =
+            release.type === "featured"
+                ? "FEATURED"
+                : release.type.toUpperCase();
+
+
+        const displayTypeTitle =
+            release.type === "featured"
+                ? "Featured"
+                : (
+                    release.type
+                        .charAt(0)
+                        .toUpperCase() +
+                    release.type.slice(1)
+                );
+
+
+        featuredRelease.innerHTML = `
+
+            <div
+                class="release-artwork"
+                id="featured-release-artwork"
+            >
+
+                ${
+                    artworkUrl
+                        ? `
+                            <img
+                                src="${escapeHtml(
+                                    artworkUrl
+                                )}"
+                                alt="${escapeHtml(
+                                    release.title
+                                )} artwork"
+                            >
+                        `
+                        : ""
+                }
+
+            </div>
+
+
+            <div class="release-info">
+
+                <div class="eyebrow">
+                    ${displayType}
+                </div>
+
+
+                <h2>
+                    ${escapeHtml(
+                        release.title
+                    )}
+                </h2>
+
+
+                <p class="release-description">
+                    ${escapeHtml(
+                        release.artists ||
+                        "Phantom Heartbeats"
+                    )}
+                </p>
+
+
+                <p class="release-meta">
+
+                    ${displayTypeTitle}
+
+                    ${
+                        year
+                            ? ` · ${year}`
+                            : ""
+                    }
+
+                    ·
+
+                    <span>
+                        ${formatRuntime(
+                            runtime
+                        )}
+                    </span>
+
+                </p>
+
+
+                <button
+                    class="play-album-button"
+                    id="featured-play-button"
+                >
+                    PLAY ${displayType}
+                </button>
+
+            </div>
+
+        `;
+
+
+        const artwork =
+            document.getElementById(
+                "featured-release-artwork"
+            );
+
+
+        if (artwork) {
+
+            artwork.addEventListener(
                 "click",
                 () => {
 
@@ -969,282 +1170,395 @@
                 }
             );
 
-
-            return card;
-
         }
 
 
-
-        /* =====================================================
-           LATEST RELEASE
-        ====================================================== */
-
-        function renderFeatured() {
-
-            if (
-                !featuredRelease
-            ) {
-                return;
-            }
+        const playFeaturedButton =
+            document.getElementById(
+                "featured-play-button"
+            );
 
 
-            if (!releases.length) {
+        if (
+            playFeaturedButton
+        ) {
 
-                featuredRelease.innerHTML = `
-                    <p>
-                        No releases published yet.
-                    </p>
-                `;
+            playFeaturedButton.addEventListener(
+                "click",
+                () => {
 
-
-                return;
-
-            }
-
-
-            const release =
-                releases[0];
+                    const playerTracks =
+                        getPlayerTracks(
+                            release
+                        );
 
 
-            const artworkUrl =
-                r2Url(
-                    release.cover_url
-                );
+                    if (
+                        !playerTracks.length
+                    ) {
+
+                        console.warn(
+                            "No playable tracks."
+                        );
 
 
-            const tracks =
-                releaseTracks[
-                    release.id
-                ] || [];
+                        return;
+
+                    }
 
 
-            const runtime =
-                tracks.reduce(
-                    (
-                        total,
-                        track
-                    ) =>
-                        total +
-                        (
-                            Number(
-                                track.duration_seconds
-                            ) || 0
-                        ),
-                    0
-                );
-
-
-            const year =
-                formatReleaseYear(
-                    release.release_date
-                );
-
-
-            const displayType =
-                release.type === "featured"
-                    ? "FEATURED"
-                    : release.type.toUpperCase();
-
-
-            const displayTypeTitle =
-                release.type === "featured"
-                    ? "Featured"
-                    : (
-                        release.type
-                            .charAt(0)
-                            .toUpperCase() +
-                        release.type.slice(1)
+                    window.setPlayerTracks(
+                        playerTracks
                     );
 
 
-            featuredRelease.innerHTML = `
+                    playTrack(
+                        0
+                    );
 
-                <div
-                    class="release-artwork"
-                    id="featured-release-artwork"
-                >
-
-                    ${
-                        artworkUrl
-                            ? `
-                                <img
-                                    src="${escapeHtml(
-                                        artworkUrl
-                                    )}"
-                                    alt="${escapeHtml(
-                                        release.title
-                                    )} artwork"
-                                >
-                            `
-                            : ""
-                    }
-
-                </div>
-
-
-                <div class="release-info">
-
-                    <div class="eyebrow">
-                        ${displayType}
-                    </div>
-
-
-                    <h2>
-                        ${escapeHtml(
-                            release.title
-                        )}
-                    </h2>
-
-
-                    <p class="release-description">
-                        ${escapeHtml(
-                            release.artists ||
-                            "Phantom Heartbeats"
-                        )}
-                    </p>
-
-
-                    <p class="release-meta">
-
-                        ${displayTypeTitle}
-
-                        ${
-                            year
-                                ? ` · ${year}`
-                                : ""
-                        }
-
-                        ·
-
-                        <span>
-                            ${formatRuntime(
-                                runtime
-                            )}
-                        </span>
-
-                    </p>
-
-
-                    <button
-                        class="play-album-button"
-                        id="featured-play-button"
-                    >
-                        PLAY ${displayType}
-                    </button>
-
-                </div>
-
-            `;
-
-
-            const artwork =
-                document.getElementById(
-                    "featured-release-artwork"
-                );
-
-
-            if (artwork) {
-
-                artwork.addEventListener(
-                    "click",
-                    () => {
-
-                        showReleaseTracks(
-                            release.id
-                        );
-
-                    }
-                );
-
-            }
-
-
-            const playFeaturedButton =
-                document.getElementById(
-                    "featured-play-button"
-                );
-
-
-            if (
-                playFeaturedButton
-            ) {
-
-                playFeaturedButton.addEventListener(
-                    "click",
-                    () => {
-
-                        const playerTracks =
-                            getPlayerTracks(
-                                release
-                            );
-
-
-                        if (
-                            !playerTracks.length
-                        ) {
-
-                            console.warn(
-                                "No playable tracks."
-                            );
-
-
-                            return;
-
-                        }
-
-
-                        window.setPlayerTracks(
-                            playerTracks
-                        );
-
-
-                        playTrack(
-                            0
-                        );
-
-                    }
-                );
-
-            }
+                }
+            );
 
         }
 
+    }
 
 
-        /* =====================================================
-           RENDER CATALOG
-        ====================================================== */
 
-        function renderCatalog(
-            type,
-            container
+    /* =====================================================
+       RENDER CATALOG
+    ====================================================== */
+
+    function renderCatalog(
+        type,
+        container
+    ) {
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML =
+            "";
+
+
+        const filtered =
+            releases.filter(
+                release =>
+                    release.type ===
+                    type
+            );
+
+
+        filtered.forEach(
+            release => {
+
+                container.appendChild(
+                    createReleaseCard(
+                        release
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       RENDER EVERYTHING
+    ====================================================== */
+
+    function renderReleases() {
+
+        renderFeatured();
+
+
+        renderCatalog(
+            "album",
+            albumsGrid
+        );
+
+
+        renderCatalog(
+            "ep",
+            epsGrid
+        );
+
+
+        renderCatalog(
+            "single",
+            singlesGrid
+        );
+
+
+        renderCatalog(
+            "featured",
+            featuredGrid
+        );
+
+
+        toggleSectionVisibility(
+            "albums-section",
+            releases.some(
+                release =>
+                    release.type ===
+                    "album"
+            )
+        );
+
+
+        toggleSectionVisibility(
+            "eps-section",
+            releases.some(
+                release =>
+                    release.type ===
+                    "ep"
+            )
+        );
+
+
+        toggleSectionVisibility(
+            "singles-section",
+            releases.some(
+                release =>
+                    release.type ===
+                    "single"
+            )
+        );
+
+
+        toggleSectionVisibility(
+            "featured-section",
+            releases.some(
+                release =>
+                    release.type ===
+                    "featured"
+            )
+        );
+
+
+        if (
+            releases.length
         ) {
 
-            if (!container) {
-                return;
-            }
+            showReleaseTracks(
+                releases[0].id,
+                false
+            );
+
+        }
+
+    }
 
 
-            container.innerHTML =
-                "";
+
+    /* =====================================================
+       SHOW TRACKLIST
+    ====================================================== */
+
+    function showReleaseTracks(
+        releaseId,
+        scroll = true
+    ) {
+
+        const release =
+            releases.find(
+                item =>
+                    item.id ===
+                    releaseId
+            );
 
 
-            const filtered =
-                releases.filter(
-                    release =>
-                        release.type ===
-                        type
+        if (!release) {
+            return;
+        }
+
+
+        const sourceTracks =
+            releaseTracks[
+                release.id
+            ] || [];
+
+
+        const playerTracks =
+            getPlayerTracks(
+                release
+            );
+
+
+        window.setPlayerTracks(
+            playerTracks
+        );
+
+
+        tracklistHeading.textContent =
+            `${release.title.toUpperCase()} · TRACKLIST`;
+
+
+        trackContainer.innerHTML =
+            "";
+
+
+        if (!sourceTracks.length) {
+
+            trackContainer.innerHTML = `
+                <div class="track">
+                    <div class="track-name">
+                        No tracks available.
+                    </div>
+                </div>
+            `;
+
+        } else {
+
+            const hasMultipleDiscs =
+                sourceTracks.some(
+                    track =>
+                        Number(
+                            track.disc_number || 1
+                        ) > 1
                 );
 
 
-            filtered.forEach(
-                release => {
+            let currentDisc = null;
 
-                    container.appendChild(
-                        createReleaseCard(
-                            release
-                        )
+
+            sourceTracks.forEach(
+                (
+                    sourceTrack,
+                    index
+                ) => {
+
+                    const discNumber =
+                        Number(
+                            sourceTrack.disc_number || 1
+                        );
+
+
+                    if (
+                        hasMultipleDiscs &&
+                        discNumber !== currentDisc
+                    ) {
+
+                        currentDisc =
+                            discNumber;
+
+
+                        const discHeader =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        discHeader.className =
+                            "disc-header";
+
+
+                        discHeader.innerHTML = `
+                            <h3>
+                                DISC ${discNumber}
+                            </h3>
+                        `;
+
+
+                        trackContainer.appendChild(
+                            discHeader
+                        );
+
+                    }
+
+
+                    const playableIndex =
+                        playerTracks.findIndex(
+                            track =>
+                                track.id ===
+                                sourceTrack.id
+                        );
+
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    element.className =
+                        "track";
+
+
+                    element.dataset.index =
+                        playableIndex;
+
+
+                    const duration =
+                        sourceTrack.duration_seconds
+                            ? formatRuntime(
+                                sourceTrack.duration_seconds
+                            )
+                            : "--:--";
+
+
+                    element.innerHTML = `
+
+                        <div class="track-number">
+                            ${String(
+                                sourceTrack.track_number ||
+                                index + 1
+                            ).padStart(
+                                2,
+                                "0"
+                            )}
+                        </div>
+
+
+                        <div class="track-name">
+                            ${escapeHtml(
+                                sourceTrack.title
+                            )}
+
+                            <div class="track-artist">
+                                ${escapeHtml(
+                                    sourceTrack.artists ||
+                                    release.artists ||
+                                    "Phantom Heartbeats"
+                                )}
+                            </div>
+                        </div>
+
+
+                        <div
+                            class="track-duration"
+                            id="duration-${playableIndex}"
+                        >
+                            ${duration}
+                        </div>
+
+                    `;
+
+
+                    if (
+                        playableIndex >= 0
+                    ) {
+
+                        element.addEventListener(
+                            "click",
+                            () => {
+
+                                playTrack(
+                                    playableIndex
+                                );
+
+                            }
+                        );
+
+                    }
+
+
+                    trackContainer.appendChild(
+                        element
                     );
 
                 }
@@ -1253,364 +1567,116 @@
         }
 
 
-
-        /* =====================================================
-           RENDER EVERYTHING
-        ====================================================== */
-
-        function renderReleases() {
-
-            renderFeatured();
+        tracklistSection.classList.remove(
+            "hidden"
+        );
 
 
-            renderCatalog(
-                "album",
-                albumsGrid
-            );
+        if (scroll) {
 
+            tracklistSection.scrollIntoView({
+                behavior:
+                    "smooth",
 
-            renderCatalog(
-                "ep",
-                epsGrid
-            );
-
-
-            renderCatalog(
-                "single",
-                singlesGrid
-            );
-
-
-            renderCatalog(
-                "featured",
-                featuredGrid
-            );
-
-
-            toggleSectionVisibility(
-                "albums-section",
-                releases.some(
-                    release =>
-                        release.type ===
-                        "album"
-                )
-            );
-
-
-            toggleSectionVisibility(
-                "eps-section",
-                releases.some(
-                    release =>
-                        release.type ===
-                        "ep"
-                )
-            );
-
-
-            toggleSectionVisibility(
-                "singles-section",
-                releases.some(
-                    release =>
-                        release.type ===
-                        "single"
-                )
-            );
-
-
-            toggleSectionVisibility(
-                "featured-section",
-                releases.some(
-                    release =>
-                        release.type ===
-                        "featured"
-                )
-            );
-
-
-            if (
-                releases.length
-            ) {
-
-                showReleaseTracks(
-                    releases[0].id,
-                    false
-                );
-
-            }
+                block:
+                    "start"
+            });
 
         }
 
+    }
 
 
-        /* =====================================================
-           SHOW TRACKLIST
-        ====================================================== */
 
-        function showReleaseTracks(
-            releaseId,
-            scroll = true
-        ) {
+    /* =====================================================
+       SECTION VISIBILITY
+    ====================================================== */
 
-            const release =
-                releases.find(
-                    item =>
-                        item.id ===
-                        releaseId
-                );
+    function toggleSectionVisibility(
+        id,
+        visible
+    ) {
 
-
-            if (!release) {
-                return;
-            }
-
-
-            const sourceTracks =
-                releaseTracks[
-                    release.id
-                ] || [];
-
-
-            const playerTracks =
-                getPlayerTracks(
-                    release
-                );
-
-
-            window.setPlayerTracks(
-                playerTracks
+        const section =
+            document.getElementById(
+                id
             );
 
 
-            tracklistHeading.textContent =
-                `${release.title.toUpperCase()} · TRACKLIST`;
-
-
-            trackContainer.innerHTML =
-                "";
-
-
-            if (!sourceTracks.length) {
-
-                trackContainer.innerHTML = `
-                    <div class="track">
-                        <div class="track-name">
-                            No tracks available.
-                        </div>
-                    </div>
-                `;
-
-            } else {
-
-                sourceTracks.forEach(
-                    (
-                        sourceTrack,
-                        index
-                    ) => {
-
-                        const playableIndex =
-                            playerTracks.findIndex(
-                                track =>
-                                    track.id ===
-                                    sourceTrack.id
-                            );
-
-
-                        const element =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        element.className =
-                            "track";
-
-
-                        element.dataset.index =
-                            playableIndex;
-
-
-                        const duration =
-                            sourceTrack.duration_seconds
-                                ? formatRuntime(
-                                    sourceTrack.duration_seconds
-                                )
-                                : "--:--";
-
-
-                        element.innerHTML = `
-
-                            <div class="track-number">
-                                ${String(
-                                    sourceTrack.track_number ||
-                                    index + 1
-                                ).padStart(
-                                    2,
-                                    "0"
-                                )}
-                            </div>
-
-
-                            <div class="track-name">
-    ${escapeHtml(
-        sourceTrack.title
-    )}
-
-    <div class="track-artist">
-        ${escapeHtml(
-            sourceTrack.artists ||
-            release.artists ||
-            "Phantom Heartbeats"
-        )}
-    </div>
-</div>
-
-                            <div
-                                class="track-duration"
-                                id="duration-${playableIndex}"
-                            >
-                                ${duration}
-                            </div>
-
-                        `;
-
-
-                        if (
-                            playableIndex >= 0
-                        ) {
-
-                            element.addEventListener(
-                                "click",
-                                () => {
-
-                                    playTrack(
-                                        playableIndex
-                                    );
-
-                                }
-                            );
-
-                        }
-
-
-                        trackContainer.appendChild(
-                            element
-                        );
-
-                    }
-                );
-
-            }
-
-
-            tracklistSection.classList.remove(
-                "hidden"
-            );
-
-
-            if (scroll) {
-
-                tracklistSection.scrollIntoView({
-                    behavior:
-                        "smooth",
-
-                    block:
-                        "start"
-                });
-
-            }
-
+        if (!section) {
+            return;
         }
 
 
-
-        /* =====================================================
-           SECTION VISIBILITY
-        ====================================================== */
-
-        function toggleSectionVisibility(
-            id,
+        section.style.display =
             visible
-        ) {
+                ? ""
+                : "none";
 
-            const section =
-                document.getElementById(
-                    id
-                );
-
-
-            if (!section) {
-                return;
-            }
-
-
-            section.style.display =
-                visible
-                    ? ""
-                    : "none";
-
-        }
+    }
 
 
 
-        /* =====================================================
-           ERROR
-        ====================================================== */
+    /* =====================================================
+       ERROR
+    ====================================================== */
 
-        function showLoadError() {
+    function showLoadError() {
 
-            featuredRelease.innerHTML = `
-                <p>
-                    Unable to load discography.
-                </p>
-            `;
+        featuredRelease.innerHTML = `
+            <p>
+                Unable to load discography.
+            </p>
+        `;
 
-        }
+    }
 
 
 
-        /* =====================================================
-           HTML ESCAPE
-        ====================================================== */
+    /* =====================================================
+       HTML ESCAPE
+    ====================================================== */
 
-        function escapeHtml(
-            value
-        ) {
+    function escapeHtml(
+        value
+    ) {
 
-            return String(
-                value ?? ""
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
             )
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
-        }
+    }
 
 
 
-        /* =====================================================
-           INITIALIZE
-        ====================================================== */
+    /* =====================================================
+       INITIALIZE
+    ====================================================== */
 
-        loadReleases();
+    loadReleases();
 
-    </script>
+</script>
+```
 
 </body>
 
