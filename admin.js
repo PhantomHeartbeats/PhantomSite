@@ -864,6 +864,12 @@ async function openRelease(
                 release.id
             )
             .order(
+                "disc_number",
+                {
+                    ascending: true
+                }
+            )
+            .order(
                 "track_number",
                 {
                     ascending: true
@@ -998,6 +1004,25 @@ function addTrack(
             <div class="form-group">
 
                 <label>
+                    DISC
+                </label>
+
+                <input
+                    type="number"
+                    class="track-disc"
+                    min="1"
+                    step="1"
+                    value="${escapeAttribute(
+                        track?.disc_number ?? 1
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
                     TITLE
                 </label>
 
@@ -1106,11 +1131,42 @@ function renumberTracks() {
         );
 
 
+    const discCounters = {};
+
+
     rows.forEach(
         (
-            row,
-            index
+            row
         ) => {
+
+            const discInput =
+                row.querySelector(
+                    ".track-disc"
+                );
+
+
+            const disc =
+                Math.max(
+                    1,
+                    parseInt(
+                        discInput?.value,
+                        10
+                    ) || 1
+                );
+
+
+            if (
+                !discCounters[disc]
+            ) {
+
+                discCounters[disc] =
+                    0;
+
+            }
+
+
+            discCounters[disc]++;
+
 
             const number =
                 row.querySelector(
@@ -1121,7 +1177,7 @@ function renumberTracks() {
             if (number) {
 
                 number.textContent =
-                    index + 1;
+                    discCounters[disc];
 
             }
 
@@ -1811,6 +1867,12 @@ async function saveRelease() {
             );
 
 
+        const discInput =
+            row.querySelector(
+                ".track-disc"
+            );
+
+
         const audioInput =
             row.querySelector(
                 ".track-audio"
@@ -1824,6 +1886,16 @@ async function saveRelease() {
         const trackArtists =
             artistsInput.value.trim() ||
             "Phantom Heartbeats";
+
+
+        const discNumber =
+            Math.max(
+                1,
+                parseInt(
+                    discInput?.value,
+                    10
+                ) || 1
+            );
 
 
         if (!trackTitle) {
@@ -1865,7 +1937,11 @@ async function saveRelease() {
                 oldTracks?.find(
                     track =>
                         track.track_number ===
-                        index + 1
+                            index + 1 &&
+                        Number(
+                            track.disc_number || 1
+                        ) ===
+                            discNumber
                 ) || null;
 
         }
@@ -1943,6 +2019,9 @@ async function saveRelease() {
                         track_number:
                             index + 1,
 
+                        disc_number:
+                            discNumber,
+
                         title:
                             trackTitle,
 
@@ -2003,6 +2082,9 @@ async function saveRelease() {
 
                         track_number:
                             index + 1,
+
+                        disc_number:
+                            discNumber,
 
                         title:
                             trackTitle,
