@@ -275,9 +275,7 @@
     aria-label="Synced lyrics"
 >
 
-    <div class="lyrics-panel-header">
-        LYRICS
-    </div>
+
 
     <div
         id="lyrics-container"
@@ -393,20 +391,45 @@
             </button>
 
 
-            <!-- NEXT -->
+           <!-- NEXT -->
 
-            <button
-                id="next-button"
-                class="player-control"
-                aria-label="Next track"
-                title="Next"
-            >
+<button
+    id="next-button"
+    class="player-control"
+    aria-label="Next track"
+    title="Next"
+>
 
-                <span class="control-icon">
-                    ⏭
-                </span>
+    <span class="control-icon">
+        ⏭
+    </span>
 
-            </button>
+</button>
+
+
+<!-- LYRICS -->
+
+<button
+    type="button"
+    id="lyrics-toggle"
+    class="player-control lyrics-toggle"
+    aria-label="Turn lyrics off"
+    title="Turn lyrics off"
+>
+    <svg
+        class="lyrics-icon"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+    >
+        <path
+            d="M4 5h16M4 10h16M4 15h10M4 20h6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+        />
+    </svg>
+</button>
 
         </div>
 
