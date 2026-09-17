@@ -1,6 +1,7 @@
 /* =========================================================
    PHANTOM HEARTBEATS — ADMIN CMS
    Supabase + Cloudflare R2
+   Synced Lyrics / LRC Support
 ========================================================= */
 
 const SUPABASE_URL =
@@ -113,7 +114,6 @@ const deleteReleaseButton =
 // ============================================================
 
 let currentRelease = null;
-
 let releases = [];
 
 
@@ -121,9 +121,7 @@ let releases = [];
 // HELPERS
 // ============================================================
 
-function formatReleaseType(
-    type
-) {
+function formatReleaseType(type) {
 
     switch (
         String(type || "").toLowerCase()
@@ -243,9 +241,7 @@ async function checkSession() {
 }
 
 
-async function verifyAdmin(
-    session
-) {
+async function verifyAdmin(session) {
 
     if (!session?.user?.id) {
 
@@ -321,20 +317,14 @@ async function getAccessToken() {
 
 loginForm.addEventListener(
     "submit",
-    async (
-        event
-    ) => {
+    async (event) => {
 
         event.preventDefault();
 
-
-        loginError.textContent =
-            "";
-
+        loginError.textContent = "";
 
         const email =
             loginEmail.value.trim();
-
 
         const password =
             loginPassword.value;
@@ -376,10 +366,8 @@ loginForm.addEventListener(
                     error
                 );
 
-
                 loginError.textContent =
                     `Login failed: ${error.message}`;
-
 
                 return;
 
@@ -390,7 +378,6 @@ loginForm.addEventListener(
 
                 loginError.textContent =
                     "Login succeeded, but no session was created.";
-
 
                 return;
 
@@ -409,10 +396,8 @@ loginForm.addEventListener(
                     .auth
                     .signOut();
 
-
                 loginError.textContent =
                     "Login worked, but this account is not authorized as an admin.";
-
 
                 return;
 
@@ -429,7 +414,6 @@ loginForm.addEventListener(
                 "Unexpected login error:",
                 error
             );
-
 
             loginError.textContent =
                 `Login error: ${error.message}`;
@@ -458,15 +442,11 @@ logoutButton.addEventListener(
             .auth
             .signOut();
 
-
-        currentRelease =
-            null;
-
+        currentRelease = null;
 
         editor.classList.add(
             "hidden"
         );
-
 
         showLogin();
 
@@ -484,7 +464,6 @@ function showLogin() {
         "hidden"
     );
 
-
     adminScreen.classList.add(
         "hidden"
     );
@@ -497,7 +476,6 @@ function showAdmin() {
     loginScreen.classList.add(
         "hidden"
     );
-
 
     adminScreen.classList.remove(
         "hidden"
@@ -548,13 +526,11 @@ async function loadReleases() {
             error
         );
 
-
         releasesList.innerHTML = `
             <div class="error">
                 FAILED TO LOAD RELEASES.
             </div>
         `;
-
 
         return;
 
@@ -563,7 +539,6 @@ async function loadReleases() {
 
     releases =
         data || [];
-
 
     renderReleases();
 
@@ -580,20 +555,16 @@ function renderReleases() {
             </div>
         `;
 
-
         return;
 
     }
 
 
-    releasesList.innerHTML =
-        "";
+    releasesList.innerHTML = "";
 
 
     releases.forEach(
-        (
-            release
-        ) => {
+        (release) => {
 
             const item =
                 document.createElement(
@@ -601,12 +572,8 @@ function renderReleases() {
                 );
 
 
-            item.type =
-                "button";
-
-
-            item.className =
-                "release-item";
+            item.type = "button";
+            item.className = "release-item";
 
 
             item.innerHTML = `
@@ -689,45 +656,30 @@ newReleaseButton.addEventListener(
     "click",
     () => {
 
-        currentRelease =
-            null;
+        currentRelease = null;
 
-
-        releaseIdInput.value =
-            "";
-
+        releaseIdInput.value = "";
 
         editorEyebrow.textContent =
             "NEW RELEASE";
 
-
         editorTitle.textContent =
             "CREATE RELEASE";
-
 
         releaseType.value =
             "album";
 
-
-        releaseTitle.value =
-            "";
-
+        releaseTitle.value = "";
 
         releaseArtists.value =
             "Phantom Heartbeats";
 
-
-        releaseDate.value =
-            "";
-
+        releaseDate.value = "";
 
         releasePublished.checked =
             false;
 
-
-        coverFile.value =
-            "";
-
+        coverFile.value = "";
 
         coverCurrent.textContent =
             "No cover uploaded.";
@@ -754,7 +706,6 @@ newReleaseButton.addEventListener(
         editor.classList.remove(
             "hidden"
         );
-
 
         releaseTitle.focus();
 
@@ -793,7 +744,6 @@ async function openRelease(
     editorEyebrow.textContent =
         "EDIT RELEASE";
 
-
     editorTitle.textContent =
         "EDIT RELEASE";
 
@@ -822,8 +772,7 @@ async function openRelease(
         !!release.published;
 
 
-    coverFile.value =
-        "";
+    coverFile.value = "";
 
 
     coverCurrent.textContent =
@@ -891,14 +840,12 @@ async function openRelease(
             </div>
         `;
 
-
         return;
 
     }
 
 
-    tracksContainer.innerHTML =
-        "";
+    tracksContainer.innerHTML = "";
 
 
     if (!tracks?.length) {
@@ -911,9 +858,7 @@ async function openRelease(
 
 
     tracks.forEach(
-        (
-            track
-        ) => {
+        (track) => {
 
             addTrack(
                 track
@@ -1082,6 +1027,44 @@ function addTrack(
 
             </div>
 
+
+            <div class="form-group full">
+
+                <label>
+                    SYNCED LYRICS
+                </label>
+
+
+                <textarea
+                    class="track-lyrics"
+                    rows="12"
+                    spellcheck="false"
+                    placeholder="[00:00.00]First lyric line
+[00:04.25]Second lyric line
+[00:08.70]Third lyric line"
+                >${escapeHtml(
+                    track?.lyrics_lrc || ""
+                )}</textarea>
+
+
+                <div class="track-lyrics-help">
+
+                    Use:
+                    [MM:SS.xx] Lyric line
+
+                    <br>
+
+                    Example:
+                    [00:12.40]I remember that night
+
+                    <br>
+
+                    One timestamp per line.
+
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -1123,6 +1106,10 @@ function addTrack(
 }
 
 
+// ============================================================
+// RENUMBER TRACKS
+// ============================================================
+
 function renumberTracks() {
 
     const rows =
@@ -1135,9 +1122,7 @@ function renumberTracks() {
 
 
     rows.forEach(
-        (
-            row
-        ) => {
+        (row) => {
 
             const discInput =
                 row.querySelector(
@@ -1293,7 +1278,6 @@ async function removeTrackRow(
 
         row.remove();
 
-
         renumberTracks();
 
 
@@ -1432,6 +1416,7 @@ if (deleteReleaseButton) {
                     "This will permanently delete:\n" +
                     "• the release\n" +
                     "• all tracks\n" +
+                    "• all synced lyrics\n" +
                     "• all track audio files\n" +
                     "• the cover\n\n" +
                     "THIS CANNOT BE UNDONE."
@@ -1569,20 +1554,16 @@ if (deleteReleaseButton) {
 
 
 // ============================================================
-// SAVE
+// SAVE FORM
 // ============================================================
 
 releaseForm.addEventListener(
     "submit",
-    async (
-        event
-    ) => {
+    async (event) => {
 
         event.preventDefault();
 
-
-        saveMessage.textContent =
-            "";
+        saveMessage.textContent = "";
 
 
         const saveButton =
@@ -1596,16 +1577,13 @@ releaseForm.addEventListener(
             saveButton.disabled =
                 true;
 
-
             saveButton.textContent =
                 "SAVING...";
 
 
             await saveRelease();
 
-
             await loadReleases();
-
 
             editor.classList.add(
                 "hidden"
@@ -1629,7 +1607,6 @@ releaseForm.addEventListener(
 
             saveButton.disabled =
                 false;
-
 
             saveButton.textContent =
                 "SAVE RELEASE";
@@ -1879,6 +1856,12 @@ async function saveRelease() {
             );
 
 
+        const lyricsInput =
+            row.querySelector(
+                ".track-lyrics"
+            );
+
+
         const trackTitle =
             titleInput.value.trim();
 
@@ -1898,10 +1881,34 @@ async function saveRelease() {
             );
 
 
+        const lyricsLrc =
+            lyricsInput?.value.trim() ||
+            null;
+
+
         if (!trackTitle) {
 
             throw new Error(
                 `Track ${index + 1} needs a title.`
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // VALIDATE LRC
+        // ----------------------------------------------------
+
+        if (
+            lyricsLrc &&
+            !validateLrc(
+                lyricsLrc
+            )
+        ) {
+
+            throw new Error(
+                `Track ${index + 1} contains invalid synced lyrics.\n\n` +
+                "Use timestamps like [00:12.40]Lyric line."
             );
 
         }
@@ -2016,6 +2023,7 @@ async function saveRelease() {
                 await supabaseClient
                     .from("tracks")
                     .update({
+
                         track_number:
                             index + 1,
 
@@ -2032,7 +2040,11 @@ async function saveRelease() {
                             audioUrl,
 
                         duration_seconds:
-                            durationSeconds
+                            durationSeconds,
+
+                        lyrics_lrc:
+                            lyricsLrc
+
                     })
                     .eq(
                         "id",
@@ -2077,6 +2089,7 @@ async function saveRelease() {
                 await supabaseClient
                     .from("tracks")
                     .insert({
+
                         release_id:
                             releaseId,
 
@@ -2096,7 +2109,11 @@ async function saveRelease() {
                             audioUrl,
 
                         duration_seconds:
-                            durationSeconds
+                            durationSeconds,
+
+                        lyrics_lrc:
+                            lyricsLrc
+
                     })
                     .select()
                     .single();
@@ -2190,6 +2207,89 @@ async function saveRelease() {
 
 
 // ============================================================
+// LRC VALIDATION
+// ============================================================
+
+function validateLrc(
+    lyrics
+) {
+
+    const lines =
+        lyrics
+            .split(/\r?\n/)
+            .map(
+                line =>
+                    line.trim()
+            )
+            .filter(Boolean);
+
+
+    if (!lines.length) {
+        return true;
+    }
+
+
+    const timestampPattern =
+        /^\[(\d{1,3}):([0-5]\d)(?:\.(\d{1,3}))?\]/;
+
+
+    for (
+        const line
+        of lines
+    ) {
+
+        if (
+            !timestampPattern.test(
+                line
+            )
+        ) {
+
+            return false;
+
+        }
+
+
+        const match =
+            line.match(
+                timestampPattern
+            );
+
+
+        if (!match) {
+            return false;
+        }
+
+
+        const minutes =
+            Number(
+                match[1]
+            );
+
+
+        const seconds =
+            Number(
+                match[2]
+            );
+
+
+        if (
+            minutes < 0 ||
+            seconds >= 60
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+// ============================================================
 // CANCEL / CLOSE
 // ============================================================
 
@@ -2197,9 +2297,7 @@ cancelButton.addEventListener(
     "click",
     () => {
 
-        currentRelease =
-            null;
-
+        currentRelease = null;
 
         editor.classList.add(
             "hidden"
@@ -2213,9 +2311,7 @@ closeEditorButton.addEventListener(
     "click",
     () => {
 
-        currentRelease =
-            null;
-
+        currentRelease = null;
 
         editor.classList.add(
             "hidden"
@@ -2808,11 +2904,13 @@ function escapeAttribute(
 
 showLogin();
 
+
 if (deleteReleaseButton) {
 
     deleteReleaseButton.disabled =
         true;
 
 }
+
 
 checkSession();
