@@ -2,16 +2,13 @@
    PHANTOM HEARTBEATS — MUSIC PLAYER
    Dynamic Supabase / R2 version
    TRUE GAPLESS WEB AUDIO PLAYBACK
+   SYNCED LRC LYRICS
 ========================================================= */
 
 let tracks = [];
-
 let currentTrack = 0;
-
 let currentReleaseId = null;
-
 let isAutoContinuing = false;
-
 let shuffleEnabled = false;
 
 
@@ -20,27 +17,17 @@ let shuffleEnabled = false;
 ========================================================= */
 
 let audioContext = null;
-
 let masterGain = null;
-
 let currentSource = null;
-
 let scheduledNext = null;
-
 let currentStartTime = 0;
-
 let currentOffset = 0;
-
 let isPlaying = false;
-
 let playbackToken = 0;
-
 let progressFrame = null;
-
 let scheduledTrackTimer = null;
 
 const decodedBuffers = new Map();
-
 const bufferPromises = new Map();
 
 
@@ -48,27 +35,24 @@ const bufferPromises = new Map();
    ARTWORK COLOR TRANSITION STATE
 ========================================================= */
 
-let currentCoverColor1 =
-    [255, 181, 60];
+let currentCoverColor1 = [255, 181, 60];
+let currentCoverColor2 = [255, 145, 0];
+let currentCoverColor3 = [255, 210, 90];
+let coverColorAnimationFrame = null;
 
-let currentCoverColor2 =
-    [255, 145, 0];
 
-let currentCoverColor3 =
-    [255, 210, 90];
+/* =========================================================
+   SYNCED LYRICS STATE
+========================================================= */
 
-let coverColorAnimationFrame =
-    null;
+let parsedLyrics = [];
+let activeLyricIndex = -1;
+let lyricsContainer = null;
 
 
 /* =========================================================
    DOM
 ========================================================= */
-
-/*
- * The existing <audio id="audio"> may remain in the HTML.
- * Playback itself is handled by Web Audio.
- */
 
 const audio =
     document.getElementById("audio");
@@ -117,6 +101,620 @@ const volumeIcon =
 
 const musicPlayer =
     document.getElementById("music-player");
+
+
+/* =========================================================
+   LYRICS CONTAINER
+========================================================= */
+
+/*
+ * If you already have a lyrics element, use:
+ *
+ * <div id="lyrics"></div>
+ *
+ * Otherwise the player creates one automatically.
+ */
+
+lyricsContainer =
+    document.getElementById("lyrics") ||
+    document.getElementById("lyrics-container") ||
+    document.getElementById("synced-lyrics");
+
+
+function createLyricsContainer() {
+
+    if (lyricsContainer) {
+        return lyricsContainer;
+    }
+
+    lyricsContainer =
+        document.createElement("div");
+
+    lyricsContainer.id =
+        "lyrics-container";
+
+    lyricsContainer.className =
+        "lyrics-container";
+
+    if (musicPlayer) {
+
+        musicPlayer.appendChild(
+            lyricsContainer
+        );
+
+    } else {
+
+        document.body.appendChild(
+            lyricsContainer
+        );
+
+    }
+
+    return lyricsContainer;
+
+}
+
+
+createLyricsContainer();
+
+
+/* =========================================================
+   LYRICS STYLES
+========================================================= */
+
+function createLyricsStyles() {
+
+    if (
+        document.getElementById(
+            "phantom-heartbeats-lyrics-styles"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "phantom-heartbeats-lyrics-styles";
+
+    style.textContent = `
+
+        #lyrics-container,
+        .lyrics-container {
+
+            width: 100%;
+            max-height: 420px;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 32px 20px;
+
+            box-sizing: border-box;
+
+            text-align: center;
+
+            scrollbar-width: none;
+
+            scroll-behavior: smooth;
+
+        }
+
+
+        #lyrics-container::-webkit-scrollbar,
+        .lyrics-container::-webkit-scrollbar {
+
+            display: none;
+
+        }
+
+
+        .lyrics-line {
+
+            margin: 12px 0;
+
+            opacity: 0.35;
+
+            transform: scale(0.98);
+
+            transition:
+                opacity 220ms ease,
+                transform 220ms ease,
+                filter 220ms ease;
+
+            font-size: 1.05rem;
+
+            line-height: 1.55;
+
+            font-weight: 500;
+
+            filter: blur(0.1px);
+
+        }
+
+
+        .lyrics-line.past {
+
+            opacity: 0.48;
+
+        }
+
+
+        .lyrics-line.active {
+
+            opacity: 1;
+
+            transform: scale(1);
+
+            font-weight: 700;
+
+            filter: none;
+
+        }
+
+
+        .lyrics-empty {
+
+            opacity: 0.45;
+
+            padding: 30px 20px;
+
+            text-align: center;
+
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
+
+}
+
+
+createLyricsStyles();
+
+
+/* =========================================================
+   LRC PARSER
+========================================================= */
+
+function parseLRC(
+    lyrics
+) {
+
+    if (
+        !lyrics ||
+        typeof lyrics !== "string"
+    ) {
+
+        return [];
+
+    }
+
+
+    const result = [];
+
+
+    const lines =
+        lyrics.split(/\r?\n/);
+
+
+    /*
+     * Supports:
+     *
+     * [00:12.40]Lyrics
+     * [01:03.250]Lyrics
+     * [1:03.25]Lyrics
+     * [00:12]Lyrics
+     *
+     * Multiple timestamps on one line
+     * are also supported.
+     */
+
+    const timestampRegex =
+        /\[(\d{1,3}):([0-5]\d)(?:[.:](\d{1,3}))?\]/g;
+
+
+    for (
+        const rawLine of lines
+    ) {
+
+        const matches =
+            [
+                ...rawLine.matchAll(
+                    timestampRegex
+                )
+            ];
+
+
+        if (!matches.length) {
+            continue;
+        }
+
+
+        const text =
+            rawLine
+                .replace(
+                    timestampRegex,
+                    ""
+                )
+                .trim();
+
+
+        /*
+         * Ignore metadata-only LRC tags:
+         *
+         * [ar:]
+         * [ti:]
+         * [al:]
+         * [by:]
+         */
+
+        if (!text) {
+            continue;
+        }
+
+
+        for (
+            const match of matches
+        ) {
+
+            const minutes =
+                Number(
+                    match[1]
+                );
+
+
+            const seconds =
+                Number(
+                    match[2]
+                );
+
+
+            const fraction =
+                match[3] ||
+                "0";
+
+
+            let milliseconds;
+
+
+            if (
+                fraction.length === 1
+            ) {
+
+                milliseconds =
+                    Number(
+                        fraction
+                    ) * 100;
+
+            } else if (
+                fraction.length === 2
+            ) {
+
+                milliseconds =
+                    Number(
+                        fraction
+                    ) * 10;
+
+            } else {
+
+                milliseconds =
+                    Number(
+                        fraction.slice(
+                            0,
+                            3
+                        )
+                    );
+
+            }
+
+
+            const time =
+                (
+                    minutes * 60
+                ) +
+                seconds +
+                (
+                    milliseconds / 1000
+                );
+
+
+            result.push({
+
+                time,
+
+                text
+
+            });
+
+        }
+
+    }
+
+
+    result.sort(
+        (
+            a,
+            b
+        ) =>
+            a.time -
+            b.time
+    );
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   RENDER LYRICS
+========================================================= */
+
+function renderLyrics(
+    track
+) {
+
+    if (!lyricsContainer) {
+        return;
+    }
+
+
+    activeLyricIndex =
+        -1;
+
+
+    const lyrics =
+        track?.lyricsLrc ||
+        track?.lyrics_lrc ||
+        "";
+
+
+    parsedLyrics =
+        parseLRC(
+            lyrics
+        );
+
+
+    lyricsContainer.innerHTML =
+        "";
+
+
+    if (
+        !parsedLyrics.length
+    ) {
+
+        lyricsContainer.hidden =
+            true;
+
+        return;
+
+    }
+
+
+    lyricsContainer.hidden =
+        false;
+
+
+    const fragment =
+        document.createDocumentFragment();
+
+
+    parsedLyrics.forEach(
+        (
+            lyric,
+            index
+        ) => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "lyrics-line";
+
+
+            element.dataset.index =
+                index;
+
+
+            /*
+             * Store the exact LRC timestamp
+             * so clicking this line can seek
+             * directly to it.
+             */
+
+            element.dataset.time =
+                lyric.time;
+
+
+            element.textContent =
+                lyric.text;
+
+
+            /*
+             * Clicking a lyric seeks directly
+             * to that lyric's timestamp.
+             */
+
+            element.addEventListener(
+                "click",
+                () => {
+
+                    seekTo(
+                        lyric.time
+                    );
+
+                }
+            );
+
+
+            /*
+             * Make it visually obvious that
+             * the lyric is clickable.
+             */
+
+            element.style.cursor =
+                "pointer";
+
+
+            fragment.appendChild(
+                element
+            );
+
+        }
+    );
+
+
+    lyricsContainer.appendChild(
+        fragment
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR LYRICS
+========================================================= */
+
+function clearLyrics() {
+
+    parsedLyrics = [];
+
+    activeLyricIndex = -1;
+
+
+    if (!lyricsContainer) {
+        return;
+    }
+
+
+    lyricsContainer.innerHTML =
+        "";
+
+
+    lyricsContainer.hidden =
+        true;
+
+}
+
+
+/* =========================================================
+   UPDATE SYNCED LYRICS
+========================================================= */
+
+function updateLyrics(
+    position = getCurrentTime()
+) {
+
+    if (
+        !lyricsContainer ||
+        !parsedLyrics.length
+    ) {
+
+        return;
+
+    }
+
+
+    let newIndex = -1;
+
+
+    for (
+        let i = 0;
+        i < parsedLyrics.length;
+        i++
+    ) {
+
+        if (
+            parsedLyrics[i].time <=
+            position
+        ) {
+
+            newIndex = i;
+
+        } else {
+
+            break;
+
+        }
+
+    }
+
+
+    if (
+        newIndex ===
+        activeLyricIndex
+    ) {
+
+        return;
+
+    }
+
+
+    activeLyricIndex =
+        newIndex;
+
+
+    const lyricElements =
+        lyricsContainer.querySelectorAll(
+            ".lyrics-line"
+        );
+
+
+    lyricElements.forEach(
+        (
+            element,
+            index
+        ) => {
+
+            element.classList.toggle(
+                "past",
+                index <
+                    activeLyricIndex
+            );
+
+
+            element.classList.toggle(
+                "active",
+                index ===
+                    activeLyricIndex
+            );
+
+        }
+    );
+
+
+    if (
+        activeLyricIndex >= 0
+    ) {
+
+        const activeElement =
+            lyricElements[
+                activeLyricIndex
+            ];
+
+
+        if (activeElement) {
+
+            activeElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    }
+
+}
 
 
 /* =========================================================
@@ -371,7 +969,7 @@ function getCurrentTime() {
 
 
 /* =========================================================
-   STOP SOURCES
+   STOP SOURCE
 ========================================================= */
 
 function stopSource(
@@ -391,6 +989,7 @@ function stopSource(
         source.stop();
 
     } catch {
+
         /*
          * Source may already be stopped.
          */
@@ -399,6 +998,10 @@ function stopSource(
 
 }
 
+
+/* =========================================================
+   CLEAR SCHEDULED NEXT
+========================================================= */
 
 function clearScheduledNext() {
 
@@ -498,6 +1101,25 @@ function resetPlayback() {
 
     updateActiveTrack();
 
+    updateProgressDisplay();
+
+}
+
+
+/* =========================================================
+   STOP PLAYBACK
+========================================================= */
+
+function stopPlayback() {
+
+    resetPlayback();
+
+    currentOffset = 0;
+
+    updateProgressDisplay();
+
+    updateLyrics(0);
+
 }
 
 
@@ -555,9 +1177,7 @@ async function scheduleNextTrack() {
     }
 
 
-    if (
-        scheduledNext
-    ) {
+    if (scheduledNext) {
         return;
     }
 
@@ -565,10 +1185,6 @@ async function scheduleNextTrack() {
     const nextIndex =
         currentTrack + 1;
 
-
-    /*
-     * No next track inside this release.
-     */
 
     if (
         nextIndex >=
@@ -584,12 +1200,8 @@ async function scheduleNextTrack() {
         tracks[nextIndex];
 
 
-    if (
-        !nextTrack?.file
-    ) {
-
+    if (!nextTrack?.file) {
         return;
-
     }
 
 
@@ -606,11 +1218,6 @@ async function scheduleNextTrack() {
         ensureAudioContext();
 
 
-    /*
-     * This is the exact end of the current
-     * audio buffer on the AudioContext timeline.
-     */
-
     const exactEndTime =
         currentStartTime +
         currentBuffer.duration;
@@ -623,11 +1230,6 @@ async function scheduleNextTrack() {
                 nextTrack
             );
 
-
-        /*
-         * The current track may have changed
-         * while the next file was downloading.
-         */
 
         if (
             !isPlaying ||
@@ -671,15 +1273,6 @@ async function scheduleNextTrack() {
 
         };
 
-
-        /*
-         * Update the visible player state
-         * when the scheduled source actually
-         * reaches its start time.
-         *
-         * This does NOT control the audio.
-         * It only updates the UI.
-         */
 
         const delay =
             Math.max(
@@ -742,12 +1335,8 @@ function commitScheduledTrack(
     }
 
 
-    if (
-        !isPlaying
-    ) {
-
+    if (!isPlaying) {
         return;
-
     }
 
 
@@ -786,7 +1375,6 @@ function commitScheduledTrack(
 
     preloadNextTrack();
 
-
 }
 
 
@@ -798,11 +1386,6 @@ function handleScheduledTrackEnded(
     source,
     trackIndex
 ) {
-
-    /*
-     * This callback is only meaningful if
-     * this source has become the current source.
-     */
 
     if (
         currentSource !==
@@ -816,24 +1399,10 @@ function handleScheduledTrackEnded(
     }
 
 
-    /*
-     * At this point there is normally another
-     * track already scheduled.
-     */
-
-    if (
-        scheduledNext
-    ) {
-
+    if (scheduledNext) {
         return;
-
     }
 
-
-    /*
-     * If there is another track but it
-     * wasn't ready, fall back to preparing it.
-     */
 
     continueAfterTrack();
 
@@ -846,12 +1415,8 @@ function handleScheduledTrackEnded(
 
 function preloadNextTrack() {
 
-    if (
-        !tracks.length
-    ) {
-
+    if (!tracks.length) {
         return;
-
     }
 
 
@@ -864,11 +1429,6 @@ function preloadNextTrack() {
         tracks.length
     ) {
 
-        /*
-         * There is no next track in this
-         * release. Don't fetch anything.
-         */
-
         return;
 
     }
@@ -878,20 +1438,10 @@ function preloadNextTrack() {
         tracks[nextIndex];
 
 
-    if (
-        !nextTrack?.file
-    ) {
-
+    if (!nextTrack?.file) {
         return;
-
     }
 
-
-    /*
-     * Start fetching/decoding immediately.
-     * Once ready, schedule it against the
-     * exact end of the current track.
-     */
 
     loadTrackBuffer(
         nextTrack
@@ -979,6 +1529,9 @@ window.setPlayerTracks =
             }
 
 
+            clearLyrics();
+
+
             if (
                 "mediaSession" in navigator
             ) {
@@ -993,11 +1546,6 @@ window.setPlayerTracks =
 
         }
 
-
-        /*
-         * Selecting a release restores
-         * normal order.
-         */
 
         createTrackList();
 
@@ -1079,6 +1627,9 @@ async function loadTrack(
     }
 
 
+    updateLyrics(0);
+
+
     try {
 
         const buffer =
@@ -1123,17 +1674,10 @@ async function loadTrack(
         }
 
 
-        /*
-         * Immediately prepare the next
-         * track once this one is decoded.
-         */
-
         preloadNextTrack();
 
 
-        if (
-            autoplay
-        ) {
+        if (autoplay) {
 
             await startCurrentTrack(
                 0
@@ -1161,12 +1705,8 @@ async function startCurrentTrack(
     offset = 0
 ) {
 
-    if (
-        !tracks.length
-    ) {
-
+    if (!tracks.length) {
         return;
-
     }
 
 
@@ -1204,10 +1744,6 @@ async function startCurrentTrack(
         }
 
 
-        /*
-         * Stop anything previously scheduled.
-         */
-
         clearScheduledNext();
 
 
@@ -1241,10 +1777,6 @@ async function startCurrentTrack(
                 )
             );
 
-
-        /*
-         * Very small scheduling lead.
-         */
 
         const startTime =
             context.currentTime +
@@ -1293,11 +1825,6 @@ async function startCurrentTrack(
 
         startProgressAnimation();
 
-
-        /*
-         * Prepare the next track immediately.
-         */
-
         preloadNextTrack();
 
 
@@ -1340,17 +1867,8 @@ function handleCurrentSourceEnded(
     }
 
 
-    /*
-     * If a next source is already scheduled,
-     * it is taking over at the exact boundary.
-     */
-
-    if (
-        scheduledNext
-    ) {
-
+    if (scheduledNext) {
         return;
-
     }
 
 
@@ -1358,12 +1876,8 @@ function handleCurrentSourceEnded(
         null;
 
 
-    if (
-        !isPlaying
-    ) {
-
+    if (!isPlaying) {
         return;
-
     }
 
 
@@ -1394,9 +1908,7 @@ function playTrack(
         currentTrack !== index;
 
 
-    if (
-        switchingTracks
-    ) {
+    if (switchingTracks) {
 
         currentOffset =
             0;
@@ -1428,18 +1940,12 @@ function playTrack(
 
 async function togglePlay() {
 
-    if (
-        !tracks.length
-    ) {
-
+    if (!tracks.length) {
         return;
-
     }
 
 
-    if (
-        isPlaying
-    ) {
+    if (isPlaying) {
 
         pausePlayback();
 
@@ -1465,10 +1971,13 @@ function pausePlayback() {
         return;
     }
 
+
     const position =
         getCurrentTime();
 
+
     playbackToken++;
+
 
     if (scheduledTrackTimer) {
 
@@ -1478,7 +1987,9 @@ function pausePlayback() {
 
         scheduledTrackTimer =
             null;
+
     }
+
 
     if (currentSource) {
 
@@ -1488,26 +1999,34 @@ function pausePlayback() {
 
         currentSource =
             null;
+
     }
+
 
     if (scheduledNext?.source) {
 
         stopSource(
             scheduledNext.source
         );
+
     }
+
 
     scheduledNext =
         null;
 
+
     isPlaying =
         false;
+
 
     currentStartTime =
         0;
 
+
     currentOffset =
         position;
+
 
     stopProgressAnimation();
 
@@ -1516,19 +2035,22 @@ function pausePlayback() {
     updateActiveTrack();
 
     updateProgressDisplay();
+
+    updateLyrics(
+        position
+    );
+
 }
+
+
 /* =========================================================
    CONTINUE AFTER TRACK
 ========================================================= */
 
 async function continueAfterTrack() {
 
-    if (
-        isAutoContinuing
-    ) {
-
+    if (isAutoContinuing) {
         return;
-
     }
 
 
@@ -1542,11 +2064,6 @@ async function continueAfterTrack() {
             currentTrack <
             tracks.length - 1
         ) {
-
-            /*
-             * If the next track wasn't scheduled,
-             * play it normally as a fallback.
-             */
 
             const nextIndex =
                 currentTrack + 1;
@@ -1570,12 +2087,6 @@ async function continueAfterTrack() {
         }
 
 
-        /*
-         * End of this release.
-         * Preserve your existing behavior:
-         * choose another published release.
-         */
-
         await continueIntoRandomRelease();
 
 
@@ -1595,12 +2106,8 @@ async function continueAfterTrack() {
 
 function nextTrack() {
 
-    if (
-        !tracks.length
-    ) {
-
+    if (!tracks.length) {
         return;
-
     }
 
 
@@ -1630,12 +2137,8 @@ function nextTrack() {
 
 function previousTrack() {
 
-    if (
-        !tracks.length
-    ) {
-
+    if (!tracks.length) {
         return;
-
     }
 
 
@@ -1643,28 +2146,20 @@ function previousTrack() {
         getCurrentTime();
 
 
-    if (
-        time > 3
-    ) {
+    if (time > 3) {
 
-        seekTo(
-            0
-        );
-
+        seekTo(0);
 
         return;
 
     }
 
 
-    if (
-        currentTrack > 0
-    ) {
+    if (currentTrack > 0) {
 
         playTrack(
             currentTrack - 1
         );
-
 
         return;
 
@@ -1691,12 +2186,8 @@ function previousTrack() {
         );
 
 
-    if (
-        releaseIndex <= 0
-    ) {
-
+    if (releaseIndex <= 0) {
         return;
-
     }
 
 
@@ -1717,12 +2208,8 @@ function previousTrack() {
             );
 
 
-        if (
-            !previousTracks.length
-        ) {
-
+        if (!previousTracks.length) {
             continue;
-
         }
 
 
@@ -1833,7 +2320,16 @@ function buildReleasePlayerTracks(
                     duration:
                         Number(
                             track.duration_seconds
-                        ) || 0
+                        ) || 0,
+
+                    /*
+                     * NEW:
+                     * Synced LRC lyrics from Supabase.
+                     */
+
+                    lyricsLrc:
+                        track.lyrics_lrc ||
+                        ""
 
                 };
 
@@ -1895,12 +2391,8 @@ function getRandomNextRelease() {
         );
 
 
-    if (
-        !candidates.length
-    ) {
-
+    if (!candidates.length) {
         return null;
-
     }
 
 
@@ -1920,12 +2412,8 @@ function getRandomNextRelease() {
 
 async function continueIntoRandomRelease() {
 
-    if (
-        isAutoContinuing
-    ) {
-
+    if (isAutoContinuing) {
         return;
-
     }
 
 
@@ -1954,9 +2442,7 @@ async function continueIntoRandomRelease() {
             );
 
 
-        if (
-            !nextTracks.length
-        ) {
+        if (!nextTracks.length) {
 
             stopPlayback();
 
@@ -2016,12 +2502,8 @@ async function continueIntoRandomRelease() {
 
 function createTrackList() {
 
-    if (
-        !trackList
-    ) {
-
+    if (!trackList) {
         return;
-
     }
 
 
@@ -2149,7 +2631,11 @@ function updatePlayerDisplay() {
 
 
     if (!track) {
+
+        clearLyrics();
+
         return;
+
     }
 
 
@@ -2169,6 +2655,16 @@ function updatePlayerDisplay() {
             "Phantom Heartbeats";
 
     }
+
+
+    /*
+     * Render the lyrics immediately when
+     * the current track changes.
+     */
+
+    renderLyrics(
+        track
+    );
 
 
     if (playerArtwork) {
@@ -2205,7 +2701,6 @@ function updatePlayerDisplay() {
     updatePlayerColors(
         track.artwork
     );
-
 
 }
 
@@ -2337,6 +2832,8 @@ function updateProgressDisplay() {
         }
 
 
+        updateLyrics(0);
+
         return;
 
     }
@@ -2404,6 +2901,16 @@ function updateProgressDisplay() {
 
     }
 
+
+    /*
+     * Sync lyrics directly to the exact
+     * Web Audio playback position.
+     */
+
+    updateLyrics(
+        position
+    );
+
 }
 
 
@@ -2418,12 +2925,8 @@ function startProgressAnimation() {
 
     function update() {
 
-        if (
-            !isPlaying
-        ) {
-
+        if (!isPlaying) {
             return;
-
         }
 
 
@@ -2450,9 +2953,7 @@ function startProgressAnimation() {
 
 function stopProgressAnimation() {
 
-    if (
-        progressFrame
-    ) {
+    if (progressFrame) {
 
         cancelAnimationFrame(
             progressFrame
@@ -2502,9 +3003,17 @@ function seekTo(
         target;
 
 
-    if (
-        wasPlaying
-    ) {
+    /*
+     * Update lyrics immediately even before
+     * the new Web Audio source starts.
+     */
+
+    updateLyrics(
+        target
+    );
+
+
+    if (wasPlaying) {
 
         startCurrentTrack(
             target
@@ -2519,9 +3028,7 @@ function seekTo(
 }
 
 
-if (
-    progress
-) {
+if (progress) {
 
     progress.addEventListener(
         "input",
@@ -2570,9 +3077,17 @@ if (
             );
 
 
-            if (
-                isPlaying
-            ) {
+            /*
+             * Keep lyrics synced while
+             * dragging the progress bar.
+             */
+
+            updateLyrics(
+                target
+            );
+
+
+            if (isPlaying) {
 
                 seekTo(
                     target
@@ -2949,6 +3464,8 @@ function shuffleTracks() {
 
     updateMediaSession();
 
+    updatePlayerDisplay();
+
 }
 
 
@@ -2956,9 +3473,7 @@ function shuffleTracks() {
    SHUFFLE BUTTON
 ========================================================= */
 
-if (
-    shuffleButton
-) {
+if (shuffleButton) {
 
     shuffleButton.addEventListener(
         "click",
@@ -2989,13 +3504,15 @@ if (
    VOLUME
 ========================================================= */
 
-audio.volume =
-    1;
+if (audio) {
+
+    audio.volume =
+        1;
+
+}
 
 
-if (
-    volume
-) {
+if (volume) {
 
     volume.style.setProperty(
         "--volume",
@@ -3013,9 +3530,7 @@ if (
                 );
 
 
-            if (
-                masterGain
-            ) {
+            if (masterGain) {
 
                 masterGain.gain.value =
                     value;
@@ -3030,9 +3545,7 @@ if (
                 );
 
 
-            if (
-                volumeValue
-            ) {
+            if (volumeValue) {
 
                 volumeValue.textContent =
                     percentage +
@@ -3083,9 +3596,7 @@ if (
    BUTTON EVENTS
 ========================================================= */
 
-if (
-    previousButton
-) {
+if (previousButton) {
 
     previousButton.addEventListener(
         "click",
@@ -3095,9 +3606,7 @@ if (
 }
 
 
-if (
-    nextButton
-) {
+if (nextButton) {
 
     nextButton.addEventListener(
         "click",
@@ -3141,6 +3650,10 @@ function colorToString(
 
 }
 
+
+/* =========================================================
+   ANIMATE COVER COLORS
+========================================================= */
 
 function animateCoverColors(
     targetColor1,
@@ -3286,9 +3799,7 @@ function animateCoverColors(
             );
 
 
-        if (
-            musicPlayer
-        ) {
+        if (musicPlayer) {
 
             musicPlayer.style.setProperty(
                 "--cover-color-1",
@@ -3750,3 +4261,5 @@ function escapeHtml(
 updateShuffleButton();
 
 setPlayState(false);
+
+clearLyrics();
