@@ -104,6 +104,12 @@ const musicPlayer =
     document.getElementById("music-player");
 
 
+const fullscreenLyrics =
+    document.getElementById("fullscreen-lyrics");
+
+const fullscreenToggle =
+    document.getElementById("fullscreen-toggle");
+
 /* =========================================================
    LYRICS CONTAINER
 ========================================================= */
@@ -511,7 +517,6 @@ function renderLyrics(
 ) {
 
     if (
-        !lyricsContainer ||
         !lyricsEnabled
     ) {
 
@@ -536,28 +541,43 @@ function renderLyrics(
         );
 
 
-    lyricsContainer.innerHTML =
-        "";
+    /* =====================================================
+       NORMAL LYRICS
+    ===================================================== */
+
+    if (lyricsContainer) {
+
+        lyricsContainer.innerHTML =
+            "";
+
+        lyricsContainer.hidden =
+            !parsedLyrics.length;
+
+    }
+
+
+    /* =====================================================
+       FULLSCREEN LYRICS
+    ===================================================== */
+
+    if (fullscreenLyrics) {
+
+        fullscreenLyrics.innerHTML =
+            "";
+
+        fullscreenLyrics.hidden =
+            !parsedLyrics.length;
+
+    }
 
 
     if (
         !parsedLyrics.length
     ) {
 
-        lyricsContainer.hidden =
-            true;
-
         return;
 
     }
-
-
-    lyricsContainer.hidden =
-        false;
-
-
-    const fragment =
-        document.createDocumentFragment();
 
 
     parsedLyrics.forEach(
@@ -566,54 +586,109 @@ function renderLyrics(
             index
         ) => {
 
-            const element =
-                document.createElement(
-                    "div"
+
+            /* =============================================
+               NORMAL LYRICS LINE
+            ============================================= */
+
+            if (lyricsContainer) {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "lyrics-line";
+
+
+                element.dataset.index =
+                    index;
+
+
+                element.dataset.time =
+                    lyric.time;
+
+
+                element.textContent =
+                    lyric.text;
+
+
+                element.addEventListener(
+                    "click",
+                    () => {
+
+                        seekTo(
+                            lyric.time
+                        );
+
+                    }
                 );
 
 
-            element.className =
-                "lyrics-line";
+                element.style.cursor =
+                    "pointer";
 
 
-            element.dataset.index =
-                index;
+                lyricsContainer.appendChild(
+                    element
+                );
+
+            }
 
 
-            element.dataset.time =
-                lyric.time;
+            /* =============================================
+               FULLSCREEN LYRICS LINE
+            ============================================= */
 
+            if (fullscreenLyrics) {
 
-            element.textContent =
-                lyric.text;
-
-
-            element.addEventListener(
-                "click",
-                () => {
-
-                    seekTo(
-                        lyric.time
+                const element =
+                    document.createElement(
+                        "div"
                     );
 
-                }
-            );
+
+                element.className =
+                    "lyrics-line";
 
 
-            element.style.cursor =
-                "pointer";
+                element.dataset.index =
+                    index;
 
 
-            fragment.appendChild(
-                element
-            );
+                element.dataset.time =
+                    lyric.time;
+
+
+                element.textContent =
+                    lyric.text;
+
+
+                element.addEventListener(
+                    "click",
+                    () => {
+
+                        seekTo(
+                            lyric.time
+                        );
+
+                    }
+                );
+
+
+                element.style.cursor =
+                    "pointer";
+
+
+                fullscreenLyrics.appendChild(
+                    element
+                );
+
+            }
 
         }
-    );
-
-
-    lyricsContainer.appendChild(
-        fragment
     );
 
 }
@@ -630,17 +705,26 @@ function clearLyrics() {
     activeLyricIndex = -1;
 
 
-    if (!lyricsContainer) {
-        return;
+    if (lyricsContainer) {
+
+        lyricsContainer.innerHTML =
+            "";
+
+        lyricsContainer.hidden =
+            true;
+
     }
 
 
-    lyricsContainer.innerHTML =
-        "";
+    if (fullscreenLyrics) {
 
+        fullscreenLyrics.innerHTML =
+            "";
 
-    lyricsContainer.hidden =
-        true;
+        fullscreenLyrics.hidden =
+            true;
+
+    }
 
 }
 
@@ -655,7 +739,6 @@ function updateLyrics(
 
     if (
         !lyricsEnabled ||
-        !lyricsContainer ||
         !parsedLyrics.length
     ) {
 
@@ -703,50 +786,112 @@ function updateLyrics(
         newIndex;
 
 
-    const lyricElements =
-        lyricsContainer.querySelectorAll(
-            ".lyrics-line"
+    /* =====================================================
+       NORMAL LYRICS
+    ===================================================== */
+
+    if (lyricsContainer) {
+
+        const lyricElements =
+            lyricsContainer.querySelectorAll(
+                ".lyrics-line"
+            );
+
+
+        lyricElements.forEach(
+            (
+                element,
+                index
+            ) => {
+
+                element.classList.toggle(
+                    "past",
+                    index <
+                        activeLyricIndex
+                );
+
+
+                element.classList.toggle(
+                    "active",
+                    index ===
+                        activeLyricIndex
+                );
+
+            }
         );
 
+    }
 
-    lyricElements.forEach(
-        (
-            element,
-            index
-        ) => {
 
-            element.classList.toggle(
-                "past",
-                index <
-                    activeLyricIndex
+    /* =====================================================
+       FULLSCREEN LYRICS
+    ===================================================== */
+
+    if (fullscreenLyrics) {
+
+        const lyricElements =
+            fullscreenLyrics.querySelectorAll(
+                ".lyrics-line"
             );
 
 
-            element.classList.toggle(
-                "active",
-                index ===
-                    activeLyricIndex
-            );
+        lyricElements.forEach(
+            (
+                element,
+                index
+            ) => {
 
-        }
-    );
+                element.classList.toggle(
+                    "past",
+                    index <
+                        activeLyricIndex
+                );
+
+
+                element.classList.toggle(
+                    "active",
+                    index ===
+                        activeLyricIndex
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SCROLL THE CURRENTLY VISIBLE LYRICS
+    ===================================================== */
+
+    const activeContainer =
+        document.fullscreenElement ===
+        musicPlayer
+
+            ? fullscreenLyrics
+
+            : lyricsContainer;
 
 
     if (
+        activeContainer &&
         activeLyricIndex >= 0
     ) {
 
         const activeElement =
-            lyricElements[
-                activeLyricIndex
-            ];
+            activeContainer.querySelector(
+                `.lyrics-line[data-index="${activeLyricIndex}"]`
+            );
 
 
         if (activeElement) {
 
             activeElement.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
             });
 
         }
@@ -4254,6 +4399,138 @@ function escapeHtml(
 
 
 /* =========================================================
+   FULLSCREEN PLAYER
+========================================================= */
+
+function updateFullscreenButton() {
+
+    if (!fullscreenToggle) {
+        return;
+    }
+
+
+    const isFullscreen =
+        document.fullscreenElement ===
+        musicPlayer;
+
+
+    const icon =
+        fullscreenToggle.querySelector(
+            ".control-icon"
+        );
+
+
+    if (icon) {
+
+        icon.textContent =
+            isFullscreen
+                ? "×"
+                : "⛶";
+
+    }
+
+
+    fullscreenToggle.setAttribute(
+        "aria-label",
+        isFullscreen
+            ? "Exit fullscreen player"
+            : "Open fullscreen player"
+    );
+
+
+    fullscreenToggle.setAttribute(
+        "title",
+        isFullscreen
+            ? "Exit fullscreen"
+            : "Fullscreen player"
+    );
+
+}
+
+
+async function togglePlayerFullscreen() {
+
+    if (!musicPlayer) {
+        return;
+    }
+
+
+    try {
+
+        if (
+            document.fullscreenElement ===
+            musicPlayer
+        ) {
+
+            await document.exitFullscreen();
+
+        } else {
+
+            await musicPlayer.requestFullscreen();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Could not toggle fullscreen:",
+            error
+        );
+
+    }
+
+}
+
+
+if (fullscreenToggle) {
+
+    fullscreenToggle.addEventListener(
+        "click",
+        togglePlayerFullscreen
+    );
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    () => {
+
+        const isFullscreen =
+            document.fullscreenElement ===
+            musicPlayer;
+
+
+        document.body.classList.toggle(
+            "player-fullscreen-open",
+            isFullscreen
+        );
+
+
+        updateFullscreenButton();
+
+
+        if (
+            isFullscreen &&
+            tracks[currentTrack]
+        ) {
+
+            renderLyrics(
+                tracks[currentTrack]
+            );
+
+
+            updateLyrics(
+                getCurrentTime()
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    INITIAL STATE
 ========================================================= */
 
@@ -4264,3 +4541,5 @@ setPlayState(false);
 clearLyrics();
 
 updateLyricsToggle();
+
+updateFullscreenButton();
