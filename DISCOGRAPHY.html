@@ -1,26 +1,23 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <title>
+        Phantom Heartbeats — Discography
+    </title>
 
-<title>
-    Phantom Heartbeats — Discography
-</title>
-
-<link
-    rel="stylesheet"
-    href="style.css"
->
-
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
@@ -168,7 +165,7 @@
         <div class="section-header">
 
             <div class="eyebrow">
-                EPs
+                EPS
             </div>
 
         </div>
@@ -268,6 +265,30 @@
 </main>
 
 
+<!-- =====================================================
+     SYNCED LYRICS PANEL
+====================================================== -->
+
+<aside
+    class="lyrics-panel"
+    id="lyrics-panel"
+    aria-label="Synced lyrics"
+>
+
+    <div class="lyrics-panel-header">
+        LYRICS
+    </div>
+
+    <div
+        id="lyrics-container"
+        class="lyrics-container"
+    >
+        <div class="lyrics-empty">
+            Select a track
+        </div>
+    </div>
+
+</aside>
 
 <!-- =====================================================
      MUSIC PLAYER
@@ -278,6 +299,10 @@
     id="music-player"
 >
 
+
+    <!-- =================================================
+         TRACK INFO
+    ================================================== -->
 
     <div class="player-track-info">
 
@@ -311,6 +336,10 @@
 
 
 
+    <!-- =================================================
+         PLAYER CONTROLS
+    ================================================== -->
+
     <div class="player-center">
 
         <div class="player-controls">
@@ -323,9 +352,11 @@
                 aria-label="Shuffle off"
                 title="Shuffle off"
             >
+
                 <span class="control-icon">
                     🔀
                 </span>
+
             </button>
 
 
@@ -337,9 +368,11 @@
                 aria-label="Previous track"
                 title="Previous"
             >
+
                 <span class="control-icon">
                     ⏮
                 </span>
+
             </button>
 
 
@@ -352,9 +385,11 @@
                 aria-label="Play"
                 title="Play"
             >
+
                 <span class="control-icon">
                     ▶
                 </span>
+
             </button>
 
 
@@ -366,14 +401,18 @@
                 aria-label="Next track"
                 title="Next"
             >
+
                 <span class="control-icon">
                     ⏭
                 </span>
+
             </button>
 
         </div>
 
 
+
+        <!-- PROGRESS -->
 
         <div class="player-progress">
 
@@ -402,6 +441,14 @@
     </div>
 
 
+
+    
+
+
+
+    <!-- =================================================
+         VOLUME
+    ================================================== -->
 
     <div class="player-volume">
 
@@ -877,7 +924,12 @@
                         duration:
                             Number(
                                 track.duration_seconds
-                            ) || 0
+                            ) || 0,
+
+
+                        lyricsLrc:
+                            track.lyrics_lrc ||
+                            ""
 
                     };
 
