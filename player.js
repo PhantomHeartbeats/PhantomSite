@@ -1564,41 +1564,31 @@ function commitScheduledTrack(
    SCHEDULED SOURCE ENDED
 ========================================================= */
 
+function handleScheduledTrackEnded(
+    source,
+    trackIndex
+) {
 
-async function continueAfterTrack() {
+    if (
+        currentSource !==
+        source ||
+        currentTrack !==
+        trackIndex
+    ) {
 
-    if (isAutoContinuing) {
+        return;
+
+    }
+
+
+    if (scheduledNext) {
         return;
     }
 
-    // If this is the final track of the release,
-    // let continueIntoRandomRelease handle its own lock.
-    if (currentTrack >= tracks.length - 1) {
 
-        await continueIntoRandomRelease();
-
-        return;
-    }
-
-    isAutoContinuing = true;
-
-    try {
-
-        const nextIndex = currentTrack + 1;
-
-        currentTrack = nextIndex;
-        currentOffset = 0;
-
-        await startCurrentTrack(0);
-
-    } finally {
-
-        isAutoContinuing = false;
-
-    }
+    continueAfterTrack();
 
 }
-
 
 
 /* =========================================================
@@ -2239,57 +2229,41 @@ function pausePlayback() {
    CONTINUE AFTER TRACK
 ========================================================= */
 
+
 async function continueAfterTrack() {
 
     if (isAutoContinuing) {
         return;
     }
 
-
-    isAutoContinuing =
-        true;
-
-
-    try {
-
-        if (
-            currentTrack <
-            tracks.length - 1
-        ) {
-
-            const nextIndex =
-                currentTrack + 1;
-
-
-            currentTrack =
-                nextIndex;
-
-
-            currentOffset =
-                0;
-
-
-            await startCurrentTrack(
-                0
-            );
-
-
-            return;
-
-        }
-
+    // If this is the final track of the release,
+    // let continueIntoRandomRelease handle its own lock.
+    if (currentTrack >= tracks.length - 1) {
 
         await continueIntoRandomRelease();
 
+        return;
+    }
+
+    isAutoContinuing = true;
+
+    try {
+
+        const nextIndex = currentTrack + 1;
+
+        currentTrack = nextIndex;
+        currentOffset = 0;
+
+        await startCurrentTrack(0);
 
     } finally {
 
-        isAutoContinuing =
-            false;
+        isAutoContinuing = false;
 
     }
 
 }
+
 
 
 /* =========================================================
