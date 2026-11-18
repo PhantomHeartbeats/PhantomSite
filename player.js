@@ -1564,31 +1564,41 @@ function commitScheduledTrack(
    SCHEDULED SOURCE ENDED
 ========================================================= */
 
-function handleScheduledTrackEnded(
-    source,
-    trackIndex
-) {
 
-    if (
-        currentSource !==
-        source ||
-        currentTrack !==
-        trackIndex
-    ) {
+async function continueAfterTrack() {
 
-        return;
-
-    }
-
-
-    if (scheduledNext) {
+    if (isAutoContinuing) {
         return;
     }
 
+    // If this is the final track of the release,
+    // let continueIntoRandomRelease handle its own lock.
+    if (currentTrack >= tracks.length - 1) {
 
-    continueAfterTrack();
+        await continueIntoRandomRelease();
+
+        return;
+    }
+
+    isAutoContinuing = true;
+
+    try {
+
+        const nextIndex = currentTrack + 1;
+
+        currentTrack = nextIndex;
+        currentOffset = 0;
+
+        await startCurrentTrack(0);
+
+    } finally {
+
+        isAutoContinuing = false;
+
+    }
 
 }
+
 
 
 /* =========================================================
