@@ -1643,3 +1643,264 @@ input[type="file"]::file-selector-button:hover {
         margin-right: 0;
     }
 }
+
+/* =========================================================
+   PHANTOM HEARTBEATS — LYRICS EDITOR
+========================================================= */
+
+.lyrics-editor {
+    width: 100%;
+    margin-top: 12px;
+    padding: 20px;
+    background: #111;
+    color: #fff;
+    border: 1px solid #292929;
+    border-radius: 12px;
+}
+
+.lyrics-editor-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.lyrics-eyebrow {
+    display: block;
+    margin-bottom: 5px;
+    color: #ff9418;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.lyrics-editor-heading h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.lyrics-line-count {
+    color: #999;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.lyrics-player {
+    padding: 15px;
+    margin-bottom: 14px;
+    background: #1c1c1c;
+    border: 1px solid #303030;
+    border-radius: 8px;
+}
+
+.lyrics-audio {
+    display: block;
+    width: 100%;
+    height: 40px;
+}
+
+.lyrics-player-status {
+    margin-top: 10px;
+    color: #aaa;
+    font-size: 11px;
+}
+
+.lyrics-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.lyrics-toolbar button {
+    min-height: 36px;
+    padding: 0 13px;
+    background: #252525;
+    border: 1px solid #393939;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.lyrics-toolbar button:hover {
+    background: #ff9418;
+    border-color: #ff9418;
+    color: #111;
+}
+
+.lyrics-toolbar .lyrics-add {
+    background: #ff9418;
+    border-color: #ff9418;
+    color: #111;
+}
+
+.lyrics-toolbar .lyrics-add:hover {
+    background: #ffad45;
+}
+
+.lyrics-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 15px 0;
+    color: #888;
+    font-size: 10px;
+}
+
+.lyrics-shortcuts kbd {
+    display: inline-block;
+    padding: 3px 6px;
+    background: #292929;
+    border: 1px solid #414141;
+    border-radius: 4px;
+    color: #ddd;
+    font-family: inherit;
+    font-size: 9px;
+}
+
+.lyrics-line-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lyrics-line {
+    display: grid;
+    grid-template-columns: 28px 105px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: #1b1b1b;
+    border: 1px solid #303030;
+    border-radius: 7px;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.lyrics-line.selected {
+    background: #282117;
+    border-color: #ff9418;
+}
+
+.lyrics-line-number {
+    color: #777;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.lyrics-line input {
+    width: 100%;
+    min-width: 0;
+    height: 36px;
+    padding: 0 9px;
+    background: #111;
+    border: 1px solid #383838;
+    border-radius: 5px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+}
+
+.lyrics-line input:focus {
+    border-color: #ff9418;
+}
+
+.lyrics-line .lyrics-time {
+    color: #ffad45;
+    font-family: monospace;
+    font-size: 11px;
+    text-align: center;
+}
+
+.lyrics-line-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lyrics-line-actions button {
+    width: 29px;
+    height: 29px;
+    padding: 0;
+    background: #292929;
+    border: 1px solid #414141;
+    border-radius: 5px;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.lyrics-line-actions button:hover:not(:disabled) {
+    background: #ff9418;
+    border-color: #ff9418;
+    color: #111;
+}
+
+.lyrics-line-actions button:disabled {
+    opacity: .3;
+    cursor: not-allowed;
+}
+
+.lyrics-line-actions .lyrics-set-time {
+    width: auto;
+    padding: 0 8px;
+    color: #ffad45;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.lyrics-line-actions .lyrics-delete:hover {
+    background: #d83b3b;
+    border-color: #d83b3b;
+    color: #fff;
+}
+
+.lyrics-empty {
+    padding: 30px 12px;
+    color: #777;
+    font-size: 12px;
+    text-align: center;
+    border: 1px dashed #383838;
+    border-radius: 7px;
+}
+
+.lyrics-empty[hidden] {
+    display: none;
+}
+
+.lyrics-source {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    .lyrics-editor {
+        padding: 13px;
+    }
+
+    .lyrics-line {
+        grid-template-columns: 22px 85px minmax(0, 1fr);
+        gap: 6px;
+    }
+
+    .lyrics-line-actions {
+        grid-column: 2 / -1;
+        justify-content: flex-end;
+    }
+
+    .lyrics-line input {
+        font-size: 11px;
+    }
+
+    .lyrics-toolbar button {
+        flex: 1;
+    }
+}
