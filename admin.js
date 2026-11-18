@@ -884,227 +884,488 @@ addTrackButton.addEventListener(
 );
 
 
-function addTrack(
-    track = null
-) {
 
-    const existingRows =
-        tracksContainer.querySelectorAll(
-            ".track-row"
-        );
+function addTrack(track = null) {
+    const existingRows = tracksContainer.querySelectorAll(".track-row");
+    const index = existingRows.length;
 
+    const emptyMessage = tracksContainer.querySelector(".empty-tracks");
+    if (emptyMessage) emptyMessage.remove();
 
-    const index =
-        existingRows.length;
+    const row = document.createElement("div");
+    row.className = "track-row";
 
-
-    const emptyMessage =
-        tracksContainer.querySelector(
-            ".empty-tracks"
-        );
-
-
-    if (emptyMessage) {
-
-        emptyMessage.remove();
-
-    }
-
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-
-    row.className =
-        "track-row";
-
-
-    if (track?.id) {
-
-        row.dataset.trackId =
-            track.id;
-
-    }
-
-
-    if (track?.audio_url) {
-
-        row.dataset.audioUrl =
-            track.audio_url;
-
-    }
-
+    if (track?.id) row.dataset.trackId = track.id;
+    if (track?.audio_url) row.dataset.audioUrl = track.audio_url;
 
     row.innerHTML = `
-
-        <div class="track-number">
-            ${index + 1}
-        </div>
-
+        <div class="track-number">${index + 1}</div>
 
         <div class="track-fields">
-
             <div class="form-group">
-
-                <label>
-                    DISC
-                </label>
-
-                <input
-                    type="number"
-                    class="track-disc"
-                    min="1"
-                    step="1"
-                    value="${escapeAttribute(
-                        track?.disc_number ?? 1
-                    )}"
-                >
-
+                <label>DISC</label>
+                <input type="number" class="track-disc" min="1" step="1"
+                    value="${escapeAttribute(track?.disc_number ?? 1)}">
             </div>
 
-
             <div class="form-group">
-
-                <label>
-                    TITLE
-                </label>
-
-                <input
-                    type="text"
-                    class="track-title"
-                    value="${escapeAttribute(
-                        track?.title || ""
-                    )}"
-                    placeholder="Track title"
-                >
-
+                <label>TITLE</label>
+                <input type="text" class="track-title"
+                    value="${escapeAttribute(track?.title || "")}"
+                    placeholder="Track title">
             </div>
 
-
             <div class="form-group">
-
-                <label>
-                    ARTISTS
-                </label>
-
-                <input
-                    type="text"
-                    class="track-artists"
-                    value="${escapeAttribute(
-                        track?.artists ||
-                        "Phantom Heartbeats"
-                    )}"
-                    placeholder="Phantom Heartbeats"
-                >
-
+                <label>ARTISTS</label>
+                <input type="text" class="track-artists"
+                    value="${escapeAttribute(track?.artists || "Phantom Heartbeats")}"
+                    placeholder="Phantom Heartbeats">
             </div>
-
 
             <div class="form-group full">
-
-                <label>
-                    AUDIO
-                </label>
-
-                <input
-                    type="file"
-                    class="track-audio"
-                    accept="audio/flac,audio/*,.flac,.wav"
-                >
-
+                <label>AUDIO</label>
+                <input type="file" class="track-audio"
+                    accept="audio/flac,audio/*,.flac,.wav">
 
                 <div class="track-current">
-
-                    ${
-                        track?.audio_url
-                            ? "Current audio uploaded."
-                            : "No audio uploaded."
-                    }
-
+                    ${track?.audio_url ? "Current audio uploaded." : "No audio uploaded."}
                 </div>
-
             </div>
-
 
             <div class="form-group full">
+                <div class="lyrics-editor">
+                    <div class="lyrics-editor-heading">
+                        <div>
+                            <span class="lyrics-eyebrow">LYRICS WORKSPACE</span>
+                            <h3>SYNCED LYRICS</h3>
+                        </div>
+                        <span class="lyrics-line-count">0 LINES</span>
+                    </div>
 
-                <label>
-                    SYNCED LYRICS
-                </label>
+                    <div class="lyrics-player">
+                        <audio class="lyrics-audio" controls preload="metadata"></audio>
+                        <div class="lyrics-player-status">
+                            ${track?.audio_url ? "Audio ready to preview" : "Upload audio to preview and sync lyrics"}
+                        </div>
+                    </div>
 
+                    <div class="lyrics-toolbar">
+                        <button type="button" class="lyrics-add">+ ADD LINE</button>
+                        <button type="button" class="lyrics-import">IMPORT LRC</button>
+                        <button type="button" class="lyrics-export">EXPORT LRC</button>
+                        <input type="file" class="lyrics-import-file"
+                            accept=".lrc,text/plain" hidden>
+                    </div>
 
-                <textarea
-                    class="track-lyrics"
-                    rows="12"
-                    spellcheck="false"
-                    placeholder="[00:00.00]First lyric line
-[00:04.25]Second lyric line
-[00:08.70]Third lyric line"
-                >${escapeHtml(
-                    track?.lyrics_lrc || ""
-                )}</textarea>
+                    <div class="lyrics-shortcuts">
+                        <span><kbd>SPACE</kbd> Play / Pause</span>
+                        <span><kbd>CTRL</kbd> + <kbd>ENTER</kbd> Set timestamp</span>
+                    </div>
 
+                    <div class="lyrics-line-list"></div>
 
-                <div class="track-lyrics-help">
+                    <div class="lyrics-empty">
+                        No lyric lines yet. Add a line or import an LRC file.
+                    </div>
 
-                    Use:
-                    [MM:SS.xx] Lyric line
-
-                    <br>
-
-                    Example:
-                    [00:12.40]I remember that night
-
-                    <br>
-
-                    One timestamp per line.
-
+                    <textarea class="track-lyrics lyrics-source"
+                        rows="12" spellcheck="false"
+                        aria-label="Raw LRC lyrics">${escapeHtml(track?.lyrics_lrc || "")}</textarea>
                 </div>
-
             </div>
-
         </div>
 
-
-        <button
-            type="button"
-            class="remove-track"
-        >
-            REMOVE
-        </button>
-
+        <button type="button" class="remove-track">REMOVE</button>
     `;
 
+    row.querySelector(".remove-track").addEventListener("click", async () => {
+        await removeTrackRow(row);
+    });
 
-    const removeButton =
-        row.querySelector(
-            ".remove-track"
-        );
+    tracksContainer.appendChild(row);
 
-
-    removeButton.addEventListener(
-        "click",
-        async () => {
-
-            await removeTrackRow(
-                row
-            );
-
-        }
-    );
-
-
-    tracksContainer.appendChild(
-        row
-    );
-
-
+    initializeLyricsEditor(row);
     renumberTracks();
-
 }
 
+
+// ============================================================
+// MUSIXMATCH-STYLE LYRICS EDITOR
+// ============================================================
+
+function parseLrc(lyrics) {
+    const result = [];
+
+    const timestampPattern =
+        /\[(\d{1,3}):([0-5]\d)(?:\.(\d{1,3}))?\]/g;
+
+    String(lyrics || "").split(/\r?\n/).forEach(line => {
+        const matches = [...line.matchAll(timestampPattern)];
+
+        if (!matches.length) return;
+
+        const text = line.replace(timestampPattern, "").trim();
+
+        matches.forEach(match => {
+            const minutes = Number(match[1]);
+            const seconds = Number(match[2]);
+            const fraction = Number(
+                (match[3] || "0").padEnd(3, "0")
+            );
+
+            result.push({
+                time: minutes * 60 + seconds + fraction / 1000,
+                text
+            });
+        });
+    });
+
+    return result.sort((a, b) => a.time - b.time);
+}
+
+
+function formatLrcTime(seconds) {
+    const safeTime = Math.max(0, Number(seconds) || 0);
+
+    const totalCentiseconds = Math.round(safeTime * 100);
+    const minutes = Math.floor(totalCentiseconds / 6000);
+    const remaining = totalCentiseconds % 6000;
+
+    const wholeSeconds = Math.floor(remaining / 100);
+    const centiseconds = remaining % 100;
+
+    return (
+        `[${String(minutes).padStart(2, "0")}:` +
+        `${String(wholeSeconds).padStart(2, "0")}.` +
+        `${String(centiseconds).padStart(2, "0")}]`
+    );
+}
+
+
+function initializeLyricsEditor(row) {
+    const audio = row.querySelector(".lyrics-audio");
+    const audioInput = row.querySelector(".track-audio");
+    const source = row.querySelector(".track-lyrics");
+    const list = row.querySelector(".lyrics-line-list");
+    const empty = row.querySelector(".lyrics-empty");
+    const count = row.querySelector(".lyrics-line-count");
+    const status = row.querySelector(".lyrics-player-status");
+
+    let lines = parseLrc(source.value);
+    let selectedIndex = -1;
+    let previewObjectUrl = null;
+
+    if (row.dataset.audioUrl) {
+        audio.src = row.dataset.audioUrl;
+    }
+
+    function updateSource() {
+        source.value = lines
+            .map(line => `${formatLrcTime(line.time)}${line.text}`)
+            .join("\n");
+    }
+
+    function updateStatus(message) {
+        status.textContent = message;
+    }
+
+    function renderLines() {
+        list.innerHTML = "";
+        count.textContent = `${lines.length} LINE${lines.length === 1 ? "" : "S"}`;
+
+        empty.hidden = lines.length > 0;
+
+        lines.forEach((line, index) => {
+            const item = document.createElement("div");
+            item.className = "lyrics-line";
+
+            if (index === selectedIndex) {
+                item.classList.add("selected");
+            }
+
+            const number = document.createElement("span");
+            number.className = "lyrics-line-number";
+            number.textContent = String(index + 1).padStart(2, "0");
+
+            const time = document.createElement("input");
+            time.type = "text";
+            time.className = "lyrics-time";
+            time.value = formatLrcTime(line.time).slice(1, -1);
+            time.placeholder = "00:00.00";
+            time.setAttribute("aria-label", `Timestamp for line ${index + 1}`);
+
+            const text = document.createElement("input");
+            text.type = "text";
+            text.className = "lyrics-text";
+            text.value = line.text;
+            text.placeholder = "Enter lyric line...";
+            text.setAttribute("aria-label", `Lyrics for line ${index + 1}`);
+
+            const actions = document.createElement("div");
+            actions.className = "lyrics-line-actions";
+
+            const setTime = document.createElement("button");
+            setTime.type = "button";
+            setTime.className = "lyrics-set-time";
+            setTime.textContent = "SET";
+            setTime.title = "Set timestamp to current playback time";
+
+            const up = document.createElement("button");
+            up.type = "button";
+            up.textContent = "↑";
+            up.title = "Move line up";
+            up.disabled = index === 0;
+
+            const down = document.createElement("button");
+            down.type = "button";
+            down.textContent = "↓";
+            down.title = "Move line down";
+            down.disabled = index === lines.length - 1;
+
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "lyrics-delete";
+            remove.textContent = "×";
+            remove.title = "Delete line";
+
+            actions.append(setTime, up, down, remove);
+            item.append(number, time, text, actions);
+
+function selectLine() {
+    selectedIndex = index;
+
+    list.querySelectorAll(".lyrics-line").forEach((line, i) => {
+        line.classList.toggle("selected", i === selectedIndex);
+    });
+}
+
+item.addEventListener("click", selectLine);
+time.addEventListener("focus", selectLine);
+text.addEventListener("focus", selectLine);
+
+            time.addEventListener("change", () => {
+                const match = time.value.trim().match(
+                    /^(\d{1,3}):([0-5]\d)(?:\.(\d{1,3}))?$/
+                );
+
+                if (!match) {
+                    time.value = formatLrcTime(line.time).slice(1, -1);
+                    updateStatus("Invalid timestamp. Use MM:SS.xx");
+                    return;
+                }
+
+                line.time =
+                    Number(match[1]) * 60 +
+                    Number(match[2]) +
+                    Number((match[3] || "0").padEnd(3, "0")) / 1000;
+
+                updateSource();
+                updateStatus("Timestamp updated.");
+            });
+
+            text.addEventListener("input", () => {
+                line.text = text.value;
+                updateSource();
+            });
+
+            setTime.addEventListener("click", event => {
+                event.stopPropagation();
+
+                line.time = audio.currentTime || 0;
+                selectedIndex = index;
+
+                updateSource();
+                renderLines();
+                updateStatus("Timestamp set from current playback position.");
+            });
+
+            up.addEventListener("click", event => {
+                event.stopPropagation();
+
+                if (index === 0) return;
+
+                [lines[index - 1], lines[index]] =
+                    [lines[index], lines[index - 1]];
+
+                selectedIndex = index - 1;
+                updateSource();
+                renderLines();
+            });
+
+            down.addEventListener("click", event => {
+                event.stopPropagation();
+
+                if (index >= lines.length - 1) return;
+
+                [lines[index + 1], lines[index]] =
+                    [lines[index], lines[index + 1]];
+
+                selectedIndex = index + 1;
+                updateSource();
+                renderLines();
+            });
+
+            remove.addEventListener("click", event => {
+                event.stopPropagation();
+
+                lines.splice(index, 1);
+                selectedIndex = -1;
+
+                updateSource();
+                renderLines();
+                updateStatus("Lyric line removed.");
+            });
+
+            list.appendChild(item);
+        });
+
+        updateSource();
+    }
+
+    function addLine() {
+        const newLine = {
+            time: audio.currentTime || 0,
+            text: ""
+        };
+
+        lines.push(newLine);
+        lines.sort((a, b) => a.time - b.time);
+
+        selectedIndex = lines.indexOf(newLine);
+
+        updateSource();
+        renderLines();
+
+        const selectedText = list.querySelector(
+            ".lyrics-line.selected .lyrics-text"
+        );
+
+        selectedText?.focus();
+
+        updateStatus("New lyric line added.");
+    }
+
+    row.querySelector(".lyrics-add").addEventListener("click", addLine);
+
+    row.querySelector(".lyrics-import").addEventListener("click", () => {
+        row.querySelector(".lyrics-import-file").click();
+    });
+
+    row.querySelector(".lyrics-import-file").addEventListener("change", async event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const content = await file.text();
+            const imported = parseLrc(content);
+
+            if (!imported.length) {
+                throw new Error("No valid timestamped lyrics were found.");
+            }
+
+            lines = imported;
+            selectedIndex = -1;
+
+            updateSource();
+            renderLines();
+            updateStatus(`Imported ${lines.length} lyric lines.`);
+        } catch (error) {
+            updateStatus(error.message);
+        }
+
+        event.target.value = "";
+    });
+
+    row.querySelector(".lyrics-export").addEventListener("click", () => {
+        updateSource();
+
+        const blob = new Blob([source.value], {
+            type: "text/plain;charset=utf-8"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const trackName =
+            row.querySelector(".track-title").value.trim() || "lyrics";
+
+        link.href = url;
+        link.download = `${trackName.replace(/[^\w-]+/g, "_")}.lrc`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+        updateStatus("LRC file exported.");
+    });
+
+    audioInput.addEventListener("change", () => {
+        const file = audioInput.files?.[0];
+        if (!file) return;
+
+        if (previewObjectUrl) {
+            URL.revokeObjectURL(previewObjectUrl);
+        }
+
+        previewObjectUrl = URL.createObjectURL(file);
+        audio.src = previewObjectUrl;
+
+        updateStatus(`Previewing: ${file.name}`);
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+        updateStatus(
+            `Audio loaded · ${formatLrcTime(audio.duration).slice(1, -1)}`
+        );
+    });
+
+    audio.addEventListener("error", () => {
+        updateStatus("Could not load audio preview.");
+    });
+
+    row.addEventListener("keydown", event => {
+        const target = event.target;
+        const isTyping = target.matches(
+            "input, textarea, select, [contenteditable='true']"
+        );
+
+        if (
+event.code === "Space" &&
+!isTyping &&
+target.tagName !== "BUTTON" &&
+target.tagName !== "AUDIO"
+        ) {
+            event.preventDefault();
+
+            if (audio.paused) {
+                audio.play().catch(() => {
+                    updateStatus("Audio playback could not start.");
+                });
+            } else {
+                audio.pause();
+            }
+        }
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter" &&
+            selectedIndex >= 0
+        ) {
+            event.preventDefault();
+
+            lines[selectedIndex].time = audio.currentTime || 0;
+
+            updateSource();
+            renderLines();
+
+            updateStatus("Selected line timestamp updated.");
+        }
+    });
+
+    renderLines();
+}
 
 // ============================================================
 // RENUMBER TRACKS
