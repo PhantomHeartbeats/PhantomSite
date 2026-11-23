@@ -1904,3 +1904,311 @@ input[type="file"]::file-selector-button:hover {
         flex: 1;
     }
 }
+
+
+/* =========================================================
+   PHANTOM HEARTBEATS — YOUTUBE VIDEO EDITOR
+========================================================= */
+
+.videos-editor {
+    margin: 0;
+    padding: 34px 38px 30px;
+    background: #fff;
+    border-top: 1px solid #dededb;
+}
+
+.videos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.videos-header h3 {
+    margin: 6px 0 0;
+    color: #111;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+.videos-editor .field-note {
+    margin: 8px 0 0;
+    color: #888;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+#add-video-button {
+    flex-shrink: 0;
+    min-height: 39px;
+    padding: 0 14px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+#add-video-button:hover {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+}
+
+#video-editor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.video-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 145px;
+    gap: 18px;
+    align-items: start;
+    padding: 17px;
+    background: #f8f8f6;
+    border: 1px solid #dededb;
+    border-radius: 10px;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.video-row:hover {
+    background: #fff;
+    border-color: #c8c8c3;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.045);
+}
+
+.video-row-main {
+    min-width: 0;
+}
+
+.video-row-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.video-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 29px;
+    height: 29px;
+    padding: 0 7px;
+    border-radius: 6px;
+    background: #171717;
+    color: #ff9418;
+    font-size: 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.video-row-top .video-status {
+    margin-left: auto;
+}
+
+.video-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.video-fields .form-group {
+    min-width: 0;
+}
+
+.video-fields .form-group.full {
+    grid-column: 1 / -1;
+}
+
+.video-fields input,
+.video-fields select {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    background: #fff;
+}
+
+.video-fields input:focus,
+.video-fields select:focus {
+    border-color: #ff9418;
+    box-shadow: 0 0 0 3px rgba(255, 148, 24, 0.08);
+}
+
+.video-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+}
+
+.video-row-actions button {
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid #d5d5d1;
+    border-radius: 6px;
+    background: #fff;
+    color: #444;
+    font-size: 9px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.video-row-actions button:hover:not(:disabled) {
+    border-color: #ff9418;
+    background: #fff8ef;
+    color: #111;
+}
+
+.video-row-actions button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.video-row-actions .remove-video {
+    margin-left: auto;
+    border-color: #ead0d0;
+    background: #fff7f7;
+    color: #a00000;
+}
+
+.video-row-actions .remove-video:hover {
+    border-color: #dcbaba;
+    background: #ffeaea;
+    color: #a00000;
+}
+
+.video-active-label {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    min-height: 35px;
+    margin: 12px 0 0 !important;
+    padding: 0 10px;
+    border: 1px solid #dededb;
+    border-radius: 6px;
+    background: #fff;
+    color: #555 !important;
+    font-size: 9px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.video-active-label input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: #ff9418;
+}
+
+.video-preview {
+    min-width: 0;
+}
+
+.video-thumbnail {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid #d8d8d5;
+    border-radius: 7px;
+    background: #e9e9e6;
+}
+
+.video-preview-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 10px;
+    border: 1px dashed #c9c9c5;
+    border-radius: 7px;
+    background: #f1f1ef;
+    color: #999;
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.video-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 23px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: #eeeeec;
+    color: #777774;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.video-status.active {
+    background: #e6f5ea;
+    color: #18733d;
+}
+
+.empty-videos {
+    padding: 32px 20px;
+    border: 1px dashed #c9c9c5;
+    border-radius: 10px;
+    background: #fafaf9;
+    color: #999;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+    .videos-editor {
+        padding: 28px 20px 24px;
+    }
+
+    .videos-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    #add-video-button {
+        align-self: flex-start;
+    }
+
+    .video-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 13px;
+    }
+
+    .video-preview {
+        grid-row: 1;
+        width: min(100%, 260px);
+    }
+
+    .video-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .video-fields .form-group.full {
+        grid-column: auto;
+    }
+
+    .video-row-actions .remove-video {
+        margin-left: 0;
+    }
+}
+
