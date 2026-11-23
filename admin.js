@@ -94,6 +94,12 @@ const tracksContainer =
 const addTrackButton =
     document.getElementById("add-track-button");
 
+const videosContainer =
+    document.getElementById("video-editor-list");
+
+const addVideoButton =
+    document.getElementById("add-video-button");
+
 const cancelButton =
     document.getElementById("cancel-button");
 
@@ -694,6 +700,12 @@ newReleaseButton.addEventListener(
 
         addTrack();
 
+        if (videosContainer) {
+            videosContainer.innerHTML = `
+                <div class="empty-videos">NO VIDEOS ADDED</div>
+            `;
+        }
+
 
         if (deleteReleaseButton) {
 
@@ -849,24 +861,323 @@ async function openRelease(
 
 
     if (!tracks?.length) {
-
         addTrack();
-
-        return;
-
+    } else {
+        tracks.forEach((track) => {
+            addTrack(track);
+        });
     }
 
+    await loadReleaseVideos(release.id);
 
-    tracks.forEach(
-        (track) => {
+}
 
-            addTrack(
-                track
-            );
 
+// ============================================================
+// YOUTUBE VIDEO EDITOR
+// ============================================================
+
+if (addVideoButton) {
+    addVideoButton.addEventListener("click", () => addVideo());
+}
+
+function extractYouTubeVideoId(value) {
+    const input = String(value || "").trim();
+    if (!input) return null;
+
+    if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+        return input;
+    }
+
+    try {
+        const url = new URL(input);
+        const host = url.hostname.replace(/^www\./, "").toLowerCase();
+
+        if (host === "youtu.be") {
+            const id = url.pathname.split("/").filter(Boolean)[0];
+            return /^[A-Za-z0-9_-]{11}$/.test(id || "") ? id : null;
         }
-    );
 
+        if (
+            host === "youtube.com" ||
+            host === "m.youtube.com" ||
+            host === "music.youtube.com"
+        ) {
+            const path = url.pathname.split("/").filter(Boolean);
+            let id = url.searchParams.get("v");
+
+            if (!id && ["embed", "shorts", "live"].includes(path[0])) {
+                id = path[1];
+            }
+
+            return /^[A-Za-z0-9_-]{11}$/.test(id || "") ? id : null;
+        }
+    } catch {
+        return null;
+    }
+
+    return null;
+}
+
+async function loadReleaseVideos(releaseId) {
+    if (!videosContainer) return;
+
+    videosContainer.innerHTML = `
+        <div class="loading">LOADING VIDEOS...</div>
+    `;
+
+    const { data, error } = await supabaseClient
+        .from("release_videos")
+        .select("*")
+        .eq("release_id", releaseId)
+        .order("sort_order", { ascending: true });
+
+    if (error) {
+        console.error("Load release videos error:", error);
+        videosContainer.innerHTML = `
+            <div class="error">
+                FAILED TO LOAD VIDEOS: ${escapeHtml(error.message)}
+            </div>
+        `;
+        return;
+    }
+
+    videosContainer.innerHTML = "";
+
+    if (!data?.length) {
+        videosContainer.innerHTML = `
+            <div class="empty-videos">NO VIDEOS ADDED</div>
+        `;
+        return;
+    }
+
+    data.forEach(video => addVideo(video));
+    renumberVideos();
+}
+
+function addVideo(video = null) {
+    if (!videosContainer) return;
+
+    const emptyMessage = videosContainer.querySelector(".empty-videos");
+    if (emptyMessage) emptyMessage.remove();
+
+    const row = document.createElement("div");
+    row.className = "video-row";
+
+    if (video?.id) row.dataset.videoId = video.id;
+
+    const initialUrl = video?.youtube_url || "";
+    const initialId = video?.video_id || extractYouTubeVideoId(initialUrl);
+
+    row.innerHTML = `
+        <div class="video-row-top">
+            <div class="video-number">1</div>
+            <div class="video-fields">
+                <div class="form-group">
+                    <label>VIDEO TITLE</label>
+                    <input
+                        type="text"
+                        class="video-title"
+                        value="${escapeAttribute(video?.title || "")}"
+                        placeholder="Official Music Video"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>YOUTUBE URL</label>
+                    <input
+                        type="url"
+                        class="video-url"
+                        value="${escapeAttribute(initialUrl)}"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                    >
+                    <div class="field-note video-status">
+                        Paste a YouTube link. The video ID will be detected automatically.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>VIDEO CATEGORY</label>
+                    <select class="video-type">
+                        <option value="music_video">Music video</option>
+                        <option value="visualizer">Visualizer</option>
+                        <option value="live">Live performance</option>
+                        <option value="lyric_video">Lyric video</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <label class="checkbox-label video-active-label">
+                    <input type="checkbox" class="video-active" checked>
+                    <span>VISIBLE ON WEBSITE</span>
+                </label>
+
+                <div class="video-preview">
+                    <img class="video-thumbnail" alt="YouTube video thumbnail">
+                    <span class="video-preview-empty">THUMBNAIL PREVIEW</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-row-actions">
+            <button type="button" class="video-up secondary-button" title="Move video up">↑</button>
+            <button type="button" class="video-down secondary-button" title="Move video down">↓</button>
+            <button type="button" class="remove-video danger-button">REMOVE VIDEO</button>
+        </div>
+    `;
+
+    const typeSelect = row.querySelector(".video-type");
+    const allowedTypes = ["music_video", "visualizer", "live", "lyric_video", "other"];
+    typeSelect.value = allowedTypes.includes(video?.video_type)
+        ? video.video_type
+        : "music_video";
+
+    row.querySelector(".video-active").checked =
+        video?.is_active !== false;
+
+    const urlInput = row.querySelector(".video-url");
+    const thumbnail = row.querySelector(".video-thumbnail");
+    const previewEmpty = row.querySelector(".video-preview-empty");
+    const status = row.querySelector(".video-status");
+
+    function updateVideoPreview() {
+        const id = extractYouTubeVideoId(urlInput.value);
+
+        if (!id) {
+            thumbnail.hidden = true;
+            previewEmpty.hidden = false;
+            status.textContent = urlInput.value.trim()
+                ? "That doesn't look like a valid YouTube video URL."
+                : "Paste a YouTube link. The video ID will be detected automatically.";
+            return;
+        }
+
+        thumbnail.src = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+        thumbnail.hidden = false;
+        previewEmpty.hidden = true;
+        status.textContent = `YouTube video detected · ID: ${id}`;
+    }
+
+    urlInput.addEventListener("input", updateVideoPreview);
+
+    row.querySelector(".remove-video").addEventListener("click", () => {
+        row.remove();
+        renumberVideos();
+        if (!videosContainer.querySelector(".video-row")) {
+            videosContainer.innerHTML = `
+                <div class="empty-videos">NO VIDEOS ADDED</div>
+            `;
+        }
+    });
+
+    row.querySelector(".video-up").addEventListener("click", () => {
+        const previous = row.previousElementSibling;
+        if (previous?.classList.contains("video-row")) {
+            videosContainer.insertBefore(row, previous);
+            renumberVideos();
+        }
+    });
+
+    row.querySelector(".video-down").addEventListener("click", () => {
+        const next = row.nextElementSibling;
+        if (next?.classList.contains("video-row")) {
+            videosContainer.insertBefore(next, row);
+            renumberVideos();
+        }
+    });
+
+    videosContainer.appendChild(row);
+    updateVideoPreview();
+    renumberVideos();
+}
+
+function renumberVideos() {
+    if (!videosContainer) return;
+
+    videosContainer.querySelectorAll(".video-row").forEach((row, index) => {
+        const number = row.querySelector(".video-number");
+        if (number) number.textContent = String(index + 1).padStart(2, "0");
+
+        const up = row.querySelector(".video-up");
+        const down = row.querySelector(".video-down");
+        if (up) up.disabled = index === 0;
+        if (down) down.disabled =
+            index === videosContainer.querySelectorAll(".video-row").length - 1;
+    });
+}
+
+async function saveReleaseVideos(releaseId) {
+    if (!videosContainer) return;
+
+    const { data: existingVideos, error: loadError } = await supabaseClient
+        .from("release_videos")
+        .select("id")
+        .eq("release_id", releaseId);
+
+    if (loadError) throw loadError;
+
+    const keptIds = new Set();
+    const rows = Array.from(videosContainer.querySelectorAll(".video-row"));
+
+    for (let index = 0; index < rows.length; index++) {
+        const row = rows[index];
+        const title = row.querySelector(".video-title").value.trim();
+        const youtubeUrl = row.querySelector(".video-url").value.trim();
+        const videoId = extractYouTubeVideoId(youtubeUrl);
+        const videoType = row.querySelector(".video-type").value;
+        const isActive = row.querySelector(".video-active").checked;
+
+        if (!title) {
+            throw new Error(`YouTube video ${index + 1} needs a title.`);
+        }
+
+        if (!videoId) {
+            throw new Error(`YouTube video ${index + 1} needs a valid YouTube URL.`);
+        }
+
+        const payload = {
+            release_id: releaseId,
+            title,
+            youtube_url: youtubeUrl,
+            video_id: videoId,
+            video_type: videoType,
+            sort_order: index + 1,
+            is_active: isActive
+        };
+
+        const existingId = row.dataset.videoId;
+
+        if (existingId) {
+            const { error } = await supabaseClient
+                .from("release_videos")
+                .update(payload)
+                .eq("id", existingId);
+
+            if (error) throw error;
+            keptIds.add(existingId);
+        } else {
+            const { data, error } = await supabaseClient
+                .from("release_videos")
+                .insert(payload)
+                .select("id")
+                .single();
+
+            if (error) throw error;
+            row.dataset.videoId = data.id;
+            keptIds.add(data.id);
+        }
+    }
+
+    for (const existing of existingVideos || []) {
+        if (!keptIds.has(existing.id)) {
+            const { error } = await supabaseClient
+                .from("release_videos")
+                .delete()
+                .eq("id", existing.id);
+
+            if (error) throw error;
+        }
+    }
 }
 
 
@@ -1718,6 +2029,15 @@ if (deleteReleaseButton) {
                     throw tracksError;
                 }
 
+                const { error: videosDeleteError } = await supabaseClient
+                    .from("release_videos")
+                    .delete()
+                    .eq("release_id", releaseId);
+
+                if (videosDeleteError) {
+                    throw videosDeleteError;
+                }
+
 
                 for (
                     const track
@@ -2460,6 +2780,11 @@ async function saveRelease() {
 
     renumberTracks();
 
+    // --------------------------------------------------------
+    // SAVE YOUTUBE VIDEOS
+    // --------------------------------------------------------
+
+    await saveReleaseVideos(releaseId);
 
     saveMessage.textContent =
         "Release saved successfully.";
