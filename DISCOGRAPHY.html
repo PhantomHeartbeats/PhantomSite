@@ -262,6 +262,28 @@
 
     </section>
 
+    <!-- =================================================
+         RELEASE VIDEOS
+    ================================================== -->
+
+    <section
+        id="videos-section"
+        class="videos-section hidden"
+    >
+
+        <div class="section-header">
+            <div class="eyebrow" id="videos-heading">
+                VIDEOS
+            </div>
+        </div>
+
+        <div
+            id="release-videos"
+            class="release-videos"
+        ></div>
+
+    </section>
+
 </main>
 
 
@@ -586,6 +608,8 @@
 
     let releaseTracks = {};
 
+    let releaseVideos = {};
+
 
 
     /* =====================================================
@@ -637,6 +661,24 @@
     const trackContainer =
         document.getElementById(
             "tracks"
+        );
+
+
+    const videosSection =
+        document.getElementById(
+            "videos-section"
+        );
+
+
+    const videosHeading =
+        document.getElementById(
+            "videos-heading"
+        );
+
+
+    const videosContainer =
+        document.getElementById(
+            "release-videos"
         );
 
 
@@ -798,6 +840,8 @@
 
             await loadAllTracks();
 
+            await loadAllVideos();
+
 
             renderReleases();
 
@@ -903,6 +947,67 @@
                             b.track_number
                         )
                 );
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       LOAD RELEASE VIDEOS
+    ====================================================== */
+
+    async function loadAllVideos() {
+
+        releaseVideos = {};
+
+        if (!releases.length) {
+            return;
+        }
+
+        const releaseIds = releases.map(
+            release => release.id
+        );
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("release_videos")
+                .select("*")
+                .in("release_id", releaseIds)
+                .eq("is_active", true)
+                .order("sort_order", {
+                    ascending: true,
+                    nullsFirst: false
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            for (const release of releases) {
+
+                releaseVideos[release.id] = (data || [])
+                    .filter(video => video.release_id === release.id)
+                    .sort((a, b) =>
+                        (Number(a.sort_order) || 0) -
+                        (Number(b.sort_order) || 0)
+                    );
+
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Could not load release videos. Check the release_videos table and its public SELECT policy:",
+                error
+            );
+
+            releaseVideos = {};
 
         }
 
@@ -1455,6 +1560,91 @@
 
 
     /* =====================================================
+       RENDER RELEASE VIDEOS
+    ====================================================== */
+
+    function renderReleaseVideos(release) {
+
+        if (!videosSection || !videosContainer) {
+            return;
+        }
+
+        const videos = releaseVideos[release.id] || [];
+
+        videosContainer.innerHTML = "";
+
+        if (!videos.length) {
+            videosSection.classList.add("hidden");
+            return;
+        }
+
+        videosHeading.textContent =
+            `${release.title.toUpperCase()} · VIDEOS`;
+
+        videos.forEach(video => {
+
+            const videoId = String(video.video_id || "").trim();
+
+            // Only accept standard 11-character YouTube video IDs.
+            if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+                console.warn("Skipping invalid YouTube video ID:", video.id);
+                return;
+            }
+
+            const card = document.createElement("article");
+            card.className = "release-video";
+
+            const frame = document.createElement("div");
+            frame.className = "release-video-frame";
+
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`;
+            iframe.title = video.title || `${release.title} video`;
+            iframe.loading = "lazy";
+            iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.allowFullscreen = true;
+
+            frame.appendChild(iframe);
+
+            const details = document.createElement("div");
+            details.className = "release-video-details";
+
+            const title = document.createElement("h3");
+            title.className = "release-video-title";
+            title.textContent = video.title || "Untitled video";
+
+            const typeLabels = {
+                music_video: "MUSIC VIDEO",
+                visualizer: "VISUALIZER",
+                live: "LIVE",
+                lyric_video: "LYRIC VIDEO",
+                other: "VIDEO"
+            };
+
+            const type = document.createElement("p");
+            type.className = "release-video-type";
+            type.textContent =
+                typeLabels[video.video_type] || "VIDEO";
+
+            details.append(title, type);
+            card.append(frame, details);
+            videosContainer.appendChild(card);
+
+        });
+
+        if (videosContainer.children.length) {
+            videosSection.classList.remove("hidden");
+        } else {
+            videosSection.classList.add("hidden");
+        }
+
+    }
+
+
+
+    /* =====================================================
        SHOW TRACKLIST
     ====================================================== */
 
@@ -1480,6 +1670,9 @@
             releaseTracks[
                 release.id
             ] || [];
+
+
+        renderReleaseVideos(release);
 
 
         const playerTracks =
